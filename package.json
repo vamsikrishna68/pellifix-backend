@@ -35,7 +35,8 @@
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
     "rebuild": "yarn run clean && yarn run build",
-    "deploy": "pm2 start \"yarn start\" --name Pellifx-api"
+    "deploy": "pm2 start \"yarn start\" --name Pellifx-api",
+    "start:watch": "tsc-watch --target es2017 --outDir ./dist --onSuccess \"node .\""
   },
   "repository": {
     "type": "git",
@@ -58,6 +59,7 @@
     "@loopback/service-proxy": "^5.0.0",
     "dotenv": "^16.0.1",
     "loopback-connector-mysql": "^5.3.0",
+    "tsc-watch": "^5.0.3",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

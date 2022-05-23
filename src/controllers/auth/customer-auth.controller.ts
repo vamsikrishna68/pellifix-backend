@@ -1,95 +1,61 @@
-import {Filter, FilterExcludingWhere, repository} from '@loopback/repository';
-import {
-  get,
-  getModelSchemaRef,
-  param,
-  post,
-  requestBody,
-  response,
-} from '@loopback/rest';
-import {Users} from '../../models';
-import {UsersRepository} from '../../repositories';
+import {repository} from '@loopback/repository';
+import {post, requestBody} from '@loopback/rest';
+import {Profiles} from '../../models';
+import {ProfilesRepository} from '../../repositories';
 
 export class CustomerController {
   constructor(
-    @repository(UsersRepository)
-    public usersRepository: UsersRepository,
+    @repository(ProfilesRepository)
+    public profilesRepository: ProfilesRepository,
   ) {}
 
   @post('/v1/customer/register')
-  @response(200, {
-    description: 'Users model instance',
-    content: {
-      'application/json': {
-        schema: {
-          properties: {
-            name: {type: 'string'},
-            dob: {type: 'string', format: 'date-time'},
-            email: {type: 'string'},
-            phone: {type: 'number'},
-          },
-        },
-      },
-    },
-  })
   async create(
     @requestBody({
       content: {
         'application/json': {
           schema: {
             properties: {
+              profile_creater: {type: 'string'},
               name: {type: 'string'},
-              dob: {type: 'string', format: 'date-time'},
-              email: {type: 'string'},
-              phone: {type: 'number'},
+              marital_status: {type: 'string', enum: ['MARRIED', 'UNMARRID']},
+              body_type: {type: 'string', enum: ['SLIM', 'CHUBBY', 'FAT']},
+              age: {type: 'number'},
+              physical_status: {type: 'string'},
+              height: {type: 'number'},
+              weight: {type: 'number'},
+              religion: {type: 'string'},
+              caste: {type: 'string'},
+              sub_caste: {type: 'string'},
+              zodiac: {type: 'string'},
+              star: {type: 'string'},
+              eating_habit: {type: 'string'},
+              drinking_habit: {type: 'string'},
+              smoking_habit: {type: 'string'},
+              country: {type: 'string'},
+              city: {type: 'string'},
+              state: {type: 'string'},
+              education: {type: 'string'},
+              occupation: {type: 'string'},
+              employeed_in: {type: 'string'},
+              salary: {type: 'string'},
+              mobileno: {type: 'string'},
+              image: {type: 'string'},
+              about_me: {type: 'string'},
+              require_details: {type: 'string'},
+              email_id: {type: 'string'},
+              gender: {type: 'string'},
+              profession: {type: 'string'},
+              address: {type: 'string'},
+              pincode: {type: 'string'},
+              phoneno: {type: 'string'},
             },
-            required: ['name', 'dob', 'email', 'phone'],
           },
         },
       },
     })
-    users: {
-      name: string;
-      dob: string;
-      email: string;
-      phone: string;
-    },
-  ): Promise<Users> {
-    const {name, ...custoemr} = users;
-
-    return this.usersRepository.create({...custoemr, first_name: name});
-  }
-
-  @get('/v1/customers')
-  @response(200, {
-    description: 'Array of Users model instances',
-    content: {
-      'application/json': {
-        schema: {
-          type: 'array',
-          items: getModelSchemaRef(Users, {includeRelations: true}),
-        },
-      },
-    },
-  })
-  async find(@param.filter(Users) filter?: Filter<Users>): Promise<Users[]> {
-    return this.usersRepository.find(filter);
-  }
-
-  @get('/v1/customers/{id}')
-  @response(200, {
-    description: 'Users model instance',
-    content: {
-      'application/json': {
-        schema: getModelSchemaRef(Users, {includeRelations: true}),
-      },
-    },
-  })
-  async findById(
-    @param.path.number('id') id: number,
-    @param.filter(Users, {exclude: 'where'})
-    filter?: FilterExcludingWhere<Users>,
-  ): Promise<Users> {
-    return this.usersRepository.findById(id, filter);
+    profile: Profiles,
+  ): Promise<Profiles> {
+    return this.profilesRepository.create(profile);
   }
 }
