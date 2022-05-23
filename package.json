@@ -35,8 +35,8 @@
     "start": "node -r source-map-support/register .",
     "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
     "rebuild": "yarn run clean && yarn run build",
-    "deploy": "pm2 start \"yarn start\" --name Pellifx-api",
-    "start:watch": "tsc-watch --target es2017 --outDir ./dist --onSuccess \"node .\""
+    "start:watch": "tsc-watch --target es2017 --outDir ./dist --onSuccess \"node .\"",
+    "deploy": "pm2 start \"yarn start:watch\" --name Pellifx-api"
   },
   "repository": {
     "type": "git",
