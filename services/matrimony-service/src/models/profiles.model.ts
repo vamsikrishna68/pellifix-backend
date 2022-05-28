@@ -7,7 +7,12 @@ export class Profiles extends Entity {
     id: true,
     generated: true,
   })
-  pro_id?: number;
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  profile_id?: string;
 
   @property({
     type: 'string',
@@ -30,6 +35,21 @@ export class Profiles extends Entity {
     type: 'string',
   })
   body_type: string;
+
+  @property({
+    type: 'date',
+  })
+  dob: string;
+
+  @property({
+    type: 'string',
+  })
+  referral_code: string;
+
+  @property({
+    type: 'boolean',
+  })
+  is_mobileno: boolean;
 
   @property({
     type: 'number',
