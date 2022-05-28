@@ -1,0 +1,20 @@
+{
+  "name": "pellifix-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/vamsikrishna68/pellifix-backend.git",
+  "author": "Asaipriyan <asaipriyanpro@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "install:matrimony": "cd ./services/matrimony-service && yarn install",
+    "install:gateway": "cd ./services/gateway-service && npm install",
+    "install": "yarn install:matrimony && yarn install:gateway ",
+    "start:matrimony": "cd ./services/matrimony-service && yarn start:watch",
+    "start:gateway": "cd ./services/gateway-service && npm start",
+    "start:watch": "concurrently --kill-others \"yarn start:matrimony\" \"yarn start:gateway \"",
+    "deploy": "pm2 start \"yarn start:watch\" --name PELLIFIX-BACKEND"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.1"
+  }
+}
