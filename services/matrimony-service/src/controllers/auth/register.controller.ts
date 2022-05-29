@@ -2,8 +2,9 @@ import {repository} from '@loopback/repository';
 import {HttpErrors, patch, post, requestBody} from '@loopback/rest';
 import {Profiles} from '../../models';
 import {ProfilesRepository} from '../../repositories';
-import {genPasswordHash} from '../../services/password-hash';
+import {genPasswordHash, comparePassword} from '../../services/password-hash';
 import {genProfileId} from '../../utils';
+import {genJwtToken} from '../../services/jwt-token';
 export class CustomerController {
   constructor(
     @repository(ProfilesRepository)
@@ -108,6 +109,26 @@ export class CustomerController {
         },
       },
     })
-    profile: Profiles,
-  ): Promise<void> {}
+    pro: {
+      email_id: string;
+      password: string;
+    },
+  ): Promise<{name: string; profile_id: string; token: string}> {
+    const user = await this.profilesRepository.findOne({
+      where: {email_id: pro.email_id},
+    });
+
+    if (!user) {
+      throw new HttpErrors[401]('User does not exist');
+    }
+    const isValid: boolean = await comparePassword(pro.password, user.password);
+
+    if (!isValid) {
+      throw new HttpErrors[401]('Incorrect password');
+    }
+
+    const token = genJwtToken({id: user.id!, name: user.name!});
+
+    return {profile_id: user.profile_id!, name: user.name!, token};
+  }
 }

@@ -15,6 +15,6 @@ export const genPasswordHash = (password: string) => {
  * @param passHash
  * @returns
  */
-export const comparePassword = (password: string, passHash: string) => {
+export const comparePassword = async (password: string, passHash: string) => {
   return bcrypt.compare(password, passHash).then((res: any) => res);
 };
