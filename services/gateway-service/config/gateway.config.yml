@@ -1,32 +1,63 @@
 http:
-  port: 8080
+  port: ${APP_PORT}
 admin:
-  port: 9876
-  host: localhost
+  port: ${ADMIN_PORT}
+  host: ${ADMIN_HOST}
 apiEndpoints:
-  api:
-    host: localhost
-    paths: '/ip'
+  matrimony:
+    host: ${ENDPOINT}
+    paths:
+      - "/v1/orders"
+
+  matrimonypublic:
+    host: ${ENDPOINT}
+    paths:
+      - "/v1/booking/ping"
+
 serviceEndpoints:
-  httpbin:
-    url: 'https://httpbin.org'
+matrimonysrv:
+  url: http://${MATRI_HOST}:${MATRI_SERVICE_PORT}
+matrimonysrvpublic:
+  url: http://${MATRI_HOST}:${MATRI_SERVICE_PORT}
 policies:
   - basic-auth
+  - key-auth
   - cors
   - expression
-  - key-auth
   - log
   - oauth2
   - proxy
   - rate-limit
+  - jwt
+  - request-transformer
 pipelines:
-  default:
+  - name: matrimony-service
     apiEndpoints:
-      - api
+      - matrimony
     policies:
-    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
-    # - key-auth:
+      - cors:
+          - action:
+            optionsSuccessStatus: 204
+      - jwt:
+          - action:
+              secretOrPublicKey: ${JWT_SECRET}
+              checkCredentialExistence: false
+      - request-transformer:
+          # add user id in request header to use in service
+          - action:
+              headers:
+                add:
+                  userid: req.user.id
+                  roleid: req.user.roleId
       - proxy:
           - action:
-              serviceEndpoint: httpbin 
+              serviceEndpoint: matrimonysrv
+              changeOrigin: true
+  - name: matrimony-service-public
+    apiEndpoints:
+      - matrimonypublic
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: matrimonysrvpublic
               changeOrigin: true
