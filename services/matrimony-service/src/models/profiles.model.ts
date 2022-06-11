@@ -232,6 +232,11 @@ export class Profiles extends Entity {
   login_status: string;
 
   @property({
+    type: 'string',
+  })
+  forget_hash: string;
+
+  @property({
     type: 'number',
   })
   created_by: number;

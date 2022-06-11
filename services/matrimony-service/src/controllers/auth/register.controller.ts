@@ -1,10 +1,11 @@
 import {repository} from '@loopback/repository';
-import {HttpErrors, patch, post, requestBody} from '@loopback/rest';
+import {HttpErrors, param, patch, post, requestBody} from '@loopback/rest';
 import {Profiles} from '../../models';
 import {ProfilesRepository} from '../../repositories';
 import {genPasswordHash, comparePassword} from '../../services/password-hash';
-import {genProfileId} from '../../utils';
+import {genProfileId, getRandomString} from '../../utils';
 import {genJwtToken} from '../../services/jwt-token';
+import {query} from 'express';
 export class CustomerController {
   constructor(
     @repository(ProfilesRepository)
@@ -130,5 +131,80 @@ export class CustomerController {
     const token = genJwtToken({id: user.id!, name: user.name!});
 
     return {profile_id: user.profile_id!, name: user.name!, token};
+  }
+
+  /**
+   * password reset API's
+   */
+
+  @post('/v1/customer/password/reset')
+  async passwordReset(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            properties: {
+              email_id: {type: 'string'},
+            },
+            required: ['email_id'],
+          },
+        },
+      },
+    })
+    pro: {
+      email_id: string;
+    },
+  ): Promise<Object> {
+    const profile = await this.profilesRepository.findOne({
+      where: {email_id: pro.email_id},
+    });
+
+    if (!profile) {
+      throw new HttpErrors[401](`User doesn't found`);
+    }
+
+    const forget_hash = getRandomString(50);
+    await this.profilesRepository.updateById(profile.id, {forget_hash});
+
+    return {
+      message: 'Reset password link send successfully',
+      hash: forget_hash,
+    };
+  }
+
+  @patch('/v1/customer/password/update/{hash}')
+  async passwordUpdate(
+    @param.path.string('hash') hash: string,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            properties: {
+              password: {type: 'string'},
+            },
+            required: ['password'],
+          },
+        },
+      },
+    })
+    pro: {
+      password: string;
+    },
+  ): Promise<void> {
+    const profile = await this.profilesRepository.findOne({
+      where: {forget_hash: hash},
+    });
+
+    if (!profile) {
+      throw new HttpErrors[401](`Not valid hash`);
+    }
+    /**
+     * password hash
+     */
+    const password = genPasswordHash(pro.password);
+    await this.profilesRepository.updateById(profile.id, {
+      password,
+      forget_hash: '',
+    });
   }
 }
