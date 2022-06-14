@@ -6,17 +6,7 @@ import {
   repository,
   Where,
 } from '@loopback/repository';
-import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
-} from '@loopback/rest';
+import {get, getModelSchemaRef, param, response} from '@loopback/rest';
 import {Profiles} from '../../models';
 import {ProfilesRepository} from '../../repositories';
 
@@ -98,5 +88,20 @@ export class ProfilesController {
     filter?: FilterExcludingWhere<Profiles>,
   ): Promise<Profiles> {
     return this.profilesRepository.findById(id, filter);
+  }
+
+  @get('/v1/profiles/address/{id}')
+  @response(200, {
+    description: 'Profiles model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(Profiles, {includeRelations: true}),
+      },
+    },
+  })
+  async getSubProfile(@param.path.number('id') id: number): Promise<Profiles> {
+    return this.profilesRepository.findById(id, {
+      fields: {address: true, mobileno: true, email_id: true},
+    });
   }
 }
