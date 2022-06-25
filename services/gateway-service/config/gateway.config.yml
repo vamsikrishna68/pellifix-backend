@@ -7,18 +7,24 @@ apiEndpoints:
   matrimony:
     host: ${ENDPOINT}
     paths:
-      - "/v1/orders"
+      - "/v1/profile/password/change"
+      - "/v1/profiles*"
 
   matrimonypublic:
     host: ${ENDPOINT}
     paths:
-      - "/v1/booking/ping"
+      - "/v1/health-check"
+      - "/v1/customer/register"
+      - "/v1/customer/login"
+      - "/v1/customer/mobile-verify"
+      - "/v1/customer/password/reset"
+      - "/v1/customer/password/update/{hash}"
 
 serviceEndpoints:
-matrimonysrv:
-  url: http://${MATRI_HOST}:${MATRI_SERVICE_PORT}
-matrimonysrvpublic:
-  url: http://${MATRI_HOST}:${MATRI_SERVICE_PORT}
+  matrimonysrv:
+    url: http://${MATRI_HOST}:${MATRI_SERVICE_PORT}
+  matrimonysrvpublic:
+    url: http://${MATRI_HOST}:${MATRI_SERVICE_PORT}
 policies:
   - basic-auth
   - key-auth
@@ -48,7 +54,6 @@ pipelines:
               headers:
                 add:
                   userid: req.user.id
-                  roleid: req.user.roleId
       - proxy:
           - action:
               serviceEndpoint: matrimonysrv

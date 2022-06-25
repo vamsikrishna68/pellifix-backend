@@ -5,7 +5,6 @@ import {ProfilesRepository} from '../../repositories';
 import {genPasswordHash, comparePassword} from '../../services/password-hash';
 import {genProfileId, getRandomString} from '../../utils';
 import {genJwtToken} from '../../services/jwt-token';
-import {query} from 'express';
 export class CustomerController {
   constructor(
     @repository(ProfilesRepository)
