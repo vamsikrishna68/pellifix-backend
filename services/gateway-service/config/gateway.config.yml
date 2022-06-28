@@ -18,7 +18,7 @@ apiEndpoints:
       - "/v1/customer/login"
       - "/v1/customer/mobile-verify"
       - "/v1/customer/password/reset"
-      - "/v1/customer/password/update/{hash}"
+      - "/v1/customer/password/update*"
 
 serviceEndpoints:
   matrimonysrv:
