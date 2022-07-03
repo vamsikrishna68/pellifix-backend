@@ -11,14 +11,13 @@ export const sendMail = function (mailOptions: {
   body: string;
 }): Promise<SentMessageInfo> {
   const {to, subject, body} = mailOptions;
-  console.log(email);
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
     secure: false, // upgrade later with STARTTLS
     auth: {
-      user: email.user,
-      pass: email.password,
+      user: process.env.MAIL,
+      pass: process.env.APP_PASWD,
     },
   });
   return transporter.sendMail({
