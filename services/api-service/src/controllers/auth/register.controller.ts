@@ -8,6 +8,7 @@ import {
 } from '../../services/password-hash.service';
 import {genProfileId, getRandomString} from '../../utils';
 import {genJwtToken} from '../../services/jwt-token.service';
+import {sendMail} from '../../services/email.service';
 export class CustomerController {
   constructor(
     @repository(ProfilesRepository)
@@ -167,6 +168,12 @@ export class CustomerController {
 
     const forget_hash = getRandomString(50);
     await this.profilesRepository.updateById(profile.id, {forget_hash});
+
+    sendMail({
+      to: profile.email_id,
+      subject: 'Password reset link',
+      body: `Your account password reset link https://pellifix.com/reset-password/${forget_hash}`,
+    });
 
     return {
       message: 'Reset password link send successfully',
