@@ -1,7 +1,10 @@
 import {repository} from '@loopback/repository';
 import {HttpErrors, patch, requestBody} from '@loopback/rest';
 import {ProfilesRepository} from '../../repositories';
-import {genPasswordHash, comparePassword} from '../../services/password-hash';
+import {
+  genPasswordHash,
+  comparePassword,
+} from '../../services/password-hash.service';
 import {inject} from '@loopback/core';
 
 export class PasswordChangeController {

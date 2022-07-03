@@ -2,9 +2,12 @@ import {repository} from '@loopback/repository';
 import {HttpErrors, param, patch, post, requestBody} from '@loopback/rest';
 import {Profiles} from '../../models';
 import {ProfilesRepository} from '../../repositories';
-import {genPasswordHash, comparePassword} from '../../services/password-hash';
+import {
+  genPasswordHash,
+  comparePassword,
+} from '../../services/password-hash.service';
 import {genProfileId, getRandomString} from '../../utils';
-import {genJwtToken} from '../../services/jwt-token';
+import {genJwtToken} from '../../services/jwt-token.service';
 export class CustomerController {
   constructor(
     @repository(ProfilesRepository)
