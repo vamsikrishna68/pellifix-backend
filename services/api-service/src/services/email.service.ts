@@ -1,6 +1,5 @@
 // @ts-ignore
 import {SentMessageInfo} from 'nodemailer';
-import {email} from '../config';
 // @ts-ignore
 // import Mail = require('nodemailer/lib/mailer');
 const nodemailer = require('nodemailer');
