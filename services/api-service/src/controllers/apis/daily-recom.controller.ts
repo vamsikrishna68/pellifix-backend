@@ -8,12 +8,14 @@ import {
   response,
 } from '@loopback/rest';
 import {Profiles} from '../../models';
-import {ProfilesRepository} from '../../repositories';
+import {PreferenceRepository, ProfilesRepository} from '../../repositories';
 
 export class DailyRecomController {
   constructor(
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,
+    @repository(PreferenceRepository)
+    public preferenceRepository: PreferenceRepository,
     @inject('authUser')
     public authUser: any,
   ) {
@@ -34,47 +36,22 @@ export class DailyRecomController {
       },
     },
   })
-  async find(
-    @param.filter(Profiles) filter?: Filter<Profiles>,
-  ): Promise<Profiles[]> {
+  async find(): Promise<Object[]> {
     const profile = await this.profilesRepository.findById(
       this.authUser.pro_id,
       {fields: {password: false}},
     );
-    //Add more filters
-    const gender = profile.gender === 'MALE' ? 'FEMALE' : 'MALE';
-    filter = {...filter, where: {...(filter && filter.where), gender}};
 
-    return this.profilesRepository.find({
-      ...filter,
-      fields: {
-        id: true,
-        profile_id: true,
-        profile_creater: true,
-        name: true,
-        marital_status: true,
-        body_type: true,
-        dob: true,
-        age: true,
-        physical_status: true,
-        height: true,
-        weight: true,
-        religion: true,
-        caste: true,
-        sub_caste: true,
-        zodiac: true,
-        star: true,
-        country: true,
-        city: true,
-        state: true,
-        education: true,
-        occupation: true,
-        image: true,
-        about_me: true,
-        is_membership: true,
-        gender: true,
-        profession: true,
-      },
-    });
+    const preference = await this.preferenceRepository.findById(
+      this.authUser.pro_id,
+    );
+
+    const gender = profile.gender === 'MALE' ? 'FEMALE' : 'MALE';
+
+    const data = await this.preferenceRepository.getDailyRecomentation(
+      gender,
+      preference,
+    );
+    return [];
   }
 }

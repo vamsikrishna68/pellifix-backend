@@ -1,16 +1,23 @@
 import {repository} from '@loopback/repository';
 import {HttpErrors, param, patch, post, requestBody} from '@loopback/rest';
 import {Profiles} from '../../models';
-import {ProfilesRepository} from '../../repositories';
+import {PreferenceRepository, ProfilesRepository} from '../../repositories';
 import {
   genPasswordHash,
   comparePassword,
 } from '../../services/password-hash.service';
-import {genProfileId, getRandomString} from '../../utils';
+import {
+  defaultPreference,
+  genProfileId,
+  getRandomString,
+  age,
+} from '../../utils';
 import {genJwtToken} from '../../services/jwt-token.service';
 import {sendMail} from '../../services/email.service';
 export class CustomerController {
   constructor(
+    @repository(PreferenceRepository)
+    public preferenceRepository: PreferenceRepository,
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,
   ) {}
@@ -32,7 +39,7 @@ export class CustomerController {
               dob: {type: 'string', format: 'date'},
               referral_code: {type: 'string'},
             },
-            required: ['mobileno', 'password', 'email_id'],
+            required: ['mobileno', 'password', 'email_id', 'dob'],
           },
         },
       },
@@ -61,6 +68,7 @@ export class CustomerController {
     /**
      * Insert the data
      */
+    user.age = age(user.dob);
     const res = await this.profilesRepository.create({...user, password});
 
     /**
@@ -69,6 +77,10 @@ export class CustomerController {
     const profile_id = 'PM' + genProfileId(res.id!);
     await this.profilesRepository.updateById(res.id, {profile_id});
 
+    /**
+     *  Create default preference for profile
+     */
+    await this.preferenceRepository.create(defaultPreference(res));
     return {profile_id, ...user};
   }
 
