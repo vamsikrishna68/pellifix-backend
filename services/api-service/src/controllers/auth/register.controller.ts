@@ -22,6 +22,7 @@ export class CustomerController {
     public profilesRepository: ProfilesRepository,
   ) {}
 
+  staticOtp = '12345';
   @post('/v1/customer/register')
   async create(
     @requestBody({
@@ -69,6 +70,10 @@ export class CustomerController {
      * Insert the data
      */
     user.age = age(user.dob);
+    /**
+     * Static OTP
+     */
+    user.otp = this.staticOtp;
     const res = await this.profilesRepository.create({...user, password});
 
     /**
@@ -84,7 +89,7 @@ export class CustomerController {
     return {profile_id, ...user};
   }
 
-  @patch('/v1/customer/mobile-verify')
+  @patch('/v1/customer/otp/verify')
   async otpVerfication(
     @requestBody({
       content: {
@@ -92,22 +97,55 @@ export class CustomerController {
           schema: {
             properties: {
               mobileno: {type: 'string'},
-              is_valid_no: {type: 'boolean'},
+              otp: {type: 'string'},
             },
-            required: ['is_valid_no'],
+            required: ['mobileno', 'otp'],
           },
         },
       },
     })
     pro: {
-      is_valid_no: boolean;
+      mobileno: string;
+      otp: string;
+    },
+  ): Promise<void> {
+    const profile = await this.profilesRepository.findOne({
+      where: {mobileno: pro.mobileno},
+    });
+    if (!profile)
+      throw new HttpErrors.UnprocessableEntity("User doesn't exist");
+    if (profile.otp !== pro.otp) {
+      throw new HttpErrors.UnprocessableEntity("Otp doesn't match");
+    }
+    await this.profilesRepository.updateById(profile.id, {otp: ''});
+  }
+
+  @patch('/v1/customer/otp/generate')
+  async otpGenerate(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            properties: {
+              mobileno: {type: 'string'},
+            },
+            required: ['mobileno'],
+          },
+        },
+      },
+    })
+    pro: {
       mobileno: string;
     },
   ): Promise<void> {
-    await this.profilesRepository.updateAll(
-      {is_mobileno: pro.is_valid_no},
-      {mobileno: pro.mobileno},
-    );
+    const profile = await this.profilesRepository.findOne({
+      where: {mobileno: pro.mobileno},
+    });
+
+    if (!profile) {
+      throw new HttpErrors.UnprocessableEntity("User doesn't exist");
+    }
+    await this.profilesRepository.updateById(profile.id, {otp: this.staticOtp});
   }
 
   @post('/v1/customer/login')
