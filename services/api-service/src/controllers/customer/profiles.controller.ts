@@ -118,6 +118,14 @@ export class ProfilesController {
           schema: getModelSchemaRef(Profiles, {
             includeRelations: false,
             partial: true,
+            exclude: [
+              'id',
+              'password',
+              'created_at',
+              'created_by',
+              'updated_at',
+              'updated_by',
+            ],
           }),
         },
       },

@@ -9,6 +9,9 @@ apiEndpoints:
     paths:
       - "/v1/profile/password/change"
       - "/v1/profiles*"
+      # Admin panel URLs
+      - "/cp/v1/admins*"
+      - "/cp/v1/profiles*"
 
   matrimonypublic:
     host: ${ENDPOINT}
@@ -20,6 +23,10 @@ apiEndpoints:
       - "/v1/customer/otp/generate"
       - "/v1/customer/password/reset"
       - "/v1/customer/password/update*"
+        # Admin panel URLs
+      - "/cp/v1/admin/auth/login"
+      - "/cp/v1/admin/auth/password/reset"
+      - "/cp/v1/admin/auth/password/update*"
 
 serviceEndpoints:
   matrimonysrv:
