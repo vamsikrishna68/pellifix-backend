@@ -13,6 +13,7 @@ import {
 } from '@loopback/rest';
 import {Profiles} from '../../models';
 import {ProfilesRepository} from '../../repositories';
+import {genProfileId} from '../../utils';
 
 export class AdminProfilesController {
   constructor(
@@ -111,6 +112,7 @@ export class AdminProfilesController {
             partial: true,
             exclude: [
               'id',
+              'profile_id',
               'password',
               'created_at',
               'created_by',
@@ -124,9 +126,16 @@ export class AdminProfilesController {
       },
     })
     profile: Profiles,
-  ): Promise<void> {
+  ): Promise<Object> {
     profile.created_by = this.authUser.pro_id;
-    await this.profilesRepository.updateById(this.authUser.pro_id, profile);
+
+    const res = await this.profilesRepository.create(profile);
+    /**
+     * Generate random id for customer and update in that profile
+     */
+    const profile_id = 'PM' + genProfileId(res.id!);
+    await this.profilesRepository.updateById(res.id, {profile_id});
+    return {profile_id: profile_id};
   }
 
   @patch('/cp/v1/profiles/{id}')
