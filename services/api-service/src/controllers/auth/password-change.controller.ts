@@ -6,15 +6,16 @@ import {
   comparePassword,
 } from '../../services/password-hash.service';
 import {inject} from '@loopback/core';
+import {AuthUser} from '../../utils';
 
 export class PasswordChangeController {
   constructor(
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,
     @inject('authUser')
-    public authUser: any,
+    public authUser: AuthUser,
   ) {
-    if (!this.authUser.pro_id) {
+    if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
     }
   }
@@ -39,7 +40,7 @@ export class PasswordChangeController {
     },
   ): Promise<void> {
     const profile = await this.profilesRepository.findOne({
-      where: {id: this.authUser.pro_id},
+      where: {id: this.authUser.id},
     });
 
     if (!profile) {

@@ -13,16 +13,16 @@ import {
 } from '@loopback/rest';
 import {Profiles} from '../../models';
 import {ProfilesRepository} from '../../repositories';
-import {genProfileId} from '../../utils';
+import {AuthUser, genProfileId} from '../../utils';
 
 export class AdminProfilesController {
   constructor(
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,
     @inject('authUser')
-    public authUser: any,
+    public authUser: AuthUser,
   ) {
-    if (!this.authUser.pro_id) {
+    if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
     }
   }
@@ -127,7 +127,7 @@ export class AdminProfilesController {
     })
     profile: Profiles,
   ): Promise<Object> {
-    profile.created_by = this.authUser.pro_id;
+    profile.created_by = this.authUser.id;
 
     const res = await this.profilesRepository.create(profile);
     /**
@@ -163,7 +163,7 @@ export class AdminProfilesController {
     })
     profile: Profiles,
   ): Promise<void> {
-    profile.updated_by = this.authUser.pro_id;
+    profile.updated_by = this.authUser.id;
     await this.profilesRepository.updateById(id, profile);
   }
 

@@ -9,6 +9,7 @@ import {
 } from '@loopback/rest';
 import {Profiles} from '../../models';
 import {PreferenceRepository, ProfilesRepository} from '../../repositories';
+import {AuthUser} from '../../utils';
 
 export class DailyRecomController {
   constructor(
@@ -17,9 +18,9 @@ export class DailyRecomController {
     @repository(PreferenceRepository)
     public preferenceRepository: PreferenceRepository,
     @inject('authUser')
-    public authUser: any,
+    public authUser: AuthUser,
   ) {
-    if (!this.authUser.pro_id) {
+    if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
     }
   }
@@ -37,13 +38,12 @@ export class DailyRecomController {
     },
   })
   async find(): Promise<Object[]> {
-    const profile = await this.profilesRepository.findById(
-      this.authUser.pro_id,
-      {fields: {password: false}},
-    );
+    const profile = await this.profilesRepository.findById(this.authUser.id, {
+      fields: {password: false},
+    });
 
     const preference = await this.preferenceRepository.findById(
-      this.authUser.pro_id,
+      this.authUser.id,
     );
 
     const gender = profile.gender === 'MALE' ? 'FEMALE' : 'MALE';

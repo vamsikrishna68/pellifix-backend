@@ -18,15 +18,16 @@ import {
 } from '@loopback/rest';
 import {Profiles} from '../../models';
 import {ProfilesRepository} from '../../repositories';
+import {AuthUser} from '../../utils';
 
 export class ProfilesController {
   constructor(
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,
     @inject('authUser')
-    public authUser: any,
+    public authUser: AuthUser,
   ) {
-    if (!this.authUser.pro_id) {
+    if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
     }
   }
@@ -92,7 +93,7 @@ export class ProfilesController {
     @param.filter(Profiles, {exclude: 'where'})
     filter?: FilterExcludingWhere<Profiles>,
   ): Promise<Profiles> {
-    return this.profilesRepository.findById(this.authUser.pro_id, filter);
+    return this.profilesRepository.findById(this.authUser.id, filter);
   }
 
   @get('/v1/profiles/address/{id}')
@@ -132,6 +133,6 @@ export class ProfilesController {
     })
     profile: Profiles,
   ): Promise<void> {
-    await this.profilesRepository.updateById(this.authUser.pro_id, profile);
+    await this.profilesRepository.updateById(this.authUser.id, profile);
   }
 }

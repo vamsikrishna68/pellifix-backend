@@ -12,6 +12,9 @@ apiEndpoints:
       # Admin panel URLs
       - "/cp/v1/admins*"
       - "/cp/v1/profiles*"
+      # Image URLs
+      - "/v1/pellifix/images*"
+      - "/v1/profiles/images/uploads"
 
   matrimonypublic:
     host: ${ENDPOINT}
@@ -62,6 +65,7 @@ pipelines:
               headers:
                 add:
                   userid: req.user.id
+                  profileid: req.user.profile_id
       - proxy:
           - action:
               serviceEndpoint: matrimonysrv

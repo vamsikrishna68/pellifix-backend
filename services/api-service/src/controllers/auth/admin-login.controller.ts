@@ -45,7 +45,11 @@ export class AdminAuthController {
     if (!isValid) {
       throw new HttpErrors[401]('Incorrect password');
     }
-    const token = genJwtToken({id: user.id!, name: user.username});
+    const token = genJwtToken({
+      id: user.id!,
+      name: user.username,
+      profile_id: '',
+    });
     return {id: user.id!, name: user.username!, token};
   }
 

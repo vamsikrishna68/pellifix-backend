@@ -1,6 +1,10 @@
 import {sign, verify} from 'jsonwebtoken';
 
-export const genJwtToken = (user: {id: number; name: string}) => {
+export const genJwtToken = (user: {
+  id: number;
+  name: string;
+  profile_id: string;
+}) => {
   return sign(user, process.env.JWT_SECRET!);
 };
 

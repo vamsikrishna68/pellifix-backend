@@ -11,15 +11,16 @@ import {
 } from '@loopback/rest';
 import {Preference} from '../../models';
 import {PreferenceRepository} from '../../repositories';
+import {AuthUser} from '../../utils';
 
 export class PreferenceController {
   constructor(
     @repository(PreferenceRepository)
     public preferenceRepository: PreferenceRepository,
     @inject('authUser')
-    public authUser: any,
+    public authUser: AuthUser,
   ) {
-    if (!this.authUser.pro_id) {
+    if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
     }
   }
@@ -37,7 +38,7 @@ export class PreferenceController {
     @param.filter(Preference, {exclude: 'where'})
     filter?: FilterExcludingWhere<Preference>,
   ): Promise<Preference> {
-    return this.preferenceRepository.findById(this.authUser.pro_id, filter);
+    return this.preferenceRepository.findById(this.authUser.id, filter);
   }
 
   @patch('/v1/profile/preferences')
@@ -55,9 +56,6 @@ export class PreferenceController {
     })
     preference: Preference,
   ): Promise<void> {
-    await this.preferenceRepository.updateById(
-      this.authUser.pro_id,
-      preference,
-    );
+    await this.preferenceRepository.updateById(this.authUser.id, preference);
   }
 }

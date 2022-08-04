@@ -1,19 +1,11 @@
 import {inject} from '@loopback/core';
-import {
-  Count,
-  CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
-  Where,
-} from '@loopback/repository';
+import {repository} from '@loopback/repository';
 import {
   post,
   param,
   get,
   getModelSchemaRef,
   patch,
-  put,
   del,
   requestBody,
   response,
@@ -21,15 +13,16 @@ import {
 } from '@loopback/rest';
 import {Admin} from '../../models';
 import {AdminRepository} from '../../repositories';
+import {AuthUser} from '../../utils';
 
 export class AdminController {
   constructor(
     @repository(AdminRepository)
     public adminRepository: AdminRepository,
     @inject('authUser')
-    public authUser: any,
+    public authUser: AuthUser,
   ) {
-    if (!this.authUser.pro_id) {
+    if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
     }
   }

@@ -181,7 +181,11 @@ export class CustomerController {
       throw new HttpErrors[401]('Incorrect password');
     }
 
-    const token = genJwtToken({id: user.id!, name: user.name!});
+    const token = genJwtToken({
+      id: user.id!,
+      name: user.name!,
+      profile_id: user.profile_id!,
+    });
 
     return {profile_id: user.profile_id!, name: user.name!, token};
   }

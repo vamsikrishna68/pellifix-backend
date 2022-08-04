@@ -24,6 +24,9 @@ export class PellifixBackendApplication extends BootMixin(
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
 
+    // Set up image view
+    this.static('/v1/pellifix/images', path.join(__dirname, '../uploads'));
+
     // Customize @loopback/rest-explorer configuration here
     this.configure(RestExplorerBindings.COMPONENT).to({
       path: '/explorer',
