@@ -30,7 +30,7 @@ jobs:
           ECR_REPOSITORY: pellifix-backend
           IMAGE_TAG: PROD
         run: |
-          docker build services/gateway-service/ -t $ECR_REGISTRY/$ECR_REPOSITORY/gateway-service:$IMAGE_TAG .
+          docker build -f services/gateway-service/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY/gateway-service:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY/gateway-service:$IMAGE_TAG
-          docker build services/api-service/ -t $ECR_REGISTRY/$ECR_REPOSITORY/api-service:$IMAGE_TAG .
+          docker build -f services/api-service/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY/api-service:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY/api-service:$IMAGE_TAG
