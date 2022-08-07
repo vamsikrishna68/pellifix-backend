@@ -1,5 +1,5 @@
 # Pull official base image
-FROM node:12-alpine AS BUILD_IMAGE
+FROM node:14-alpine AS BUILD_IMAGE
 
 # Set working directory
 WORKDIR /usr/src/app
@@ -20,7 +20,7 @@ RUN npm build
 RUN npm prune --production
 
 # Main Image
-FROM node:12-alpine
+FROM node:14-alpine
 
 # Set working directory
 WORKDIR /usr/src/app
