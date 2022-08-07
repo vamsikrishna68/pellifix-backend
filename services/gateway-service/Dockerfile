@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install NPM packages
-RUN npm ci --only=production
+RUN npm install
 
 # Copy source files
 COPY --chown=node . .
