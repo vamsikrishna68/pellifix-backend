@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install NPM packages
-RUN npm install
+RUN npm ci --only=production
 
 # Copy source files
 COPY --chown=node . .
@@ -32,7 +32,7 @@ COPY --from=BUILD_IMAGE /usr/src/app/server.js ./server.js
 COPY --from=BUILD_IMAGE /usr/src/app/config ./config
 
 # Expose Ports
-EXPOSE 3006 9876
+EXPOSE 4000 9876
 
 # Docker start command
 CMD [ "node", "." ]

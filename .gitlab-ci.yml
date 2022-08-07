@@ -1,0 +1,29 @@
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  - docker info
+
+services:
+  - docker:dind
+
+# Official docker image.
+image: docker:latest
+
+docker-build-master:
+  stage: build
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE/gateway-service" -t "$CI_REGISTRY_IMAGE/gateway-service:PROD" services/gateway-service/.
+    - docker push "$CI_REGISTRY_IMAGE/gateway-service:PROD"
+    - docker build --pull -t "$CI_REGISTRY_IMAGE/api-service" -t "$CI_REGISTRY_IMAGE/api-service:PROD" services/api-service/.
+    - docker push "$CI_REGISTRY_IMAGE/api-service:PROD"
+  only:
+    - main
+
+docker-build-develop:
+  stage: build
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE/gateway-service:$CI_COMMIT_REF_SLUG" -t "$CI_REGISTRY_IMAGE/gateway-service:UAT" services/gateway-service/.
+    - docker push "$CI_REGISTRY_IMAGE/gateway-service:UAT"
+    - docker build --pull -t "$CI_REGISTRY_IMAGE/api-service:$CI_COMMIT_REF_SLUG" -t "$CI_REGISTRY_IMAGE/api-service:UAT" services/api-service/.
+    - docker push "$CI_REGISTRY_IMAGE/api-service:UAT"
+  only:
+    - develop
