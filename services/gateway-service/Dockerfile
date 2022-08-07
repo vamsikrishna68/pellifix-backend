@@ -7,6 +7,9 @@ WORKDIR /usr/src/app
 # Copy package.json & package-lock.json files
 COPY package*.json ./
 
+# Copy server file
+COPY server.js ./
+
 # Install NPM packages
 RUN npm ci --only=production
 
