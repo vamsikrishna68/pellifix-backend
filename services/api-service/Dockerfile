@@ -1,28 +1,37 @@
-# Check out https://hub.docker.com/_/node to select a new base image
-FROM node:16-slim
+# Pull official base image
+FROM node:14-alpine AS BUILD_IMAGE
 
-# Set to a non-root built-in user `node`
-USER node
+# Set working directory
+WORKDIR /usr/src/app
 
-# Create app directory (with user `node`)
-RUN mkdir -p /home/node/app
+# Copy package.json & package-lock.json files
+COPY package*.json ./
 
-WORKDIR /home/node/app
+# Install NPM packages
+RUN yarn install
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY --chown=node package*.json ./
-
-RUN npm install
-
-# Bundle app source code
+# Copy source files
 COPY --chown=node . .
 
-RUN npm run build
+# Build
+RUN yarn build
 
-# Bind to all network interfaces so that it can be mapped to the host OS
-ENV HOST=0.0.0.0 PORT=3000
+# Remove development dependencies
+RUN yarn prune --production
 
-EXPOSE ${PORT}
+# Main Image
+FROM node:12-alpine
+
+# Set working directory
+WORKDIR /usr/src/app
+
+# Copy from build image
+COPY --from=BUILD_IMAGE /usr/src/app/node_modules ./node_modules
+COPY --from=BUILD_IMAGE /usr/src/app/package.json ./package.json
+COPY --from=BUILD_IMAGE /usr/src/app/ ./
+
+# Expore Ports
+EXPOSE 3000
+
+# Docker start command
 CMD [ "node", "." ]

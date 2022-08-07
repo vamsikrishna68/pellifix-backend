@@ -1,0 +1,21 @@
+version: "3"
+services:
+  gateway-service:
+    build: ./services/gateway-service/
+    container_name: pellifix-gateway-service
+    restart: always
+    ports:
+      - "4000:4000"
+      - "9876:9876"
+    depends_on:
+      - api-service
+    env_file:
+      - .env
+  api-service:
+    build: ./services/api-service/
+    container_name: pellifix-api-service
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
