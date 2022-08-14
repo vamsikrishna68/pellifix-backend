@@ -17,13 +17,15 @@ import {
   response,
 } from '@loopback/rest';
 import {Profiles} from '../../models';
-import {ProfilesRepository} from '../../repositories';
+import {ImagesRepository, ProfilesRepository} from '../../repositories';
 import {AuthUser} from '../../utils';
 
 export class ProfilesController {
   constructor(
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,
+    @repository(ImagesRepository)
+    public imagesRepository: ImagesRepository,
     @inject('authUser')
     public authUser: AuthUser,
   ) {
@@ -92,8 +94,21 @@ export class ProfilesController {
   async findById(
     @param.filter(Profiles, {exclude: 'where'})
     filter?: FilterExcludingWhere<Profiles>,
-  ): Promise<Profiles> {
-    return this.profilesRepository.findById(this.authUser.id, filter);
+  ): Promise<Object> {
+    const image = await this.imagesRepository.findOne({
+      where: {pro_id: this.authUser.id, primary_pic: true},
+    });
+
+    const profile = await this.profilesRepository.findById(
+      this.authUser.id,
+      filter,
+    );
+
+    if (image) {
+      profile.image = image.url;
+    }
+
+    return {...profile};
   }
 
   @get('/v1/profiles/address/{id}')
