@@ -224,6 +224,56 @@ export class Profiles extends Entity {
   @property({
     type: 'string',
   })
+  interests: string;
+
+  @property({
+    type: 'string',
+  })
+  hobbies: string;
+
+  @property({
+    type: 'number',
+  })
+  no_of_sisters_married: number;
+
+  @property({
+    type: 'number',
+  })
+  no_of_sisters: number;
+
+  @property({
+    type: 'number',
+  })
+  no_of_brothers_married: number;
+
+  @property({
+    type: 'number',
+  })
+  no_of_brothers: number;
+
+  @property({
+    type: 'string',
+  })
+  mothers_occupation: string;
+
+  @property({
+    type: 'string',
+  })
+  fathers_occupation: string;
+
+  @property({
+    type: 'string',
+  })
+  family_status: string;
+
+  @property({
+    type: 'string',
+  })
+  family_type: string;
+
+  @property({
+    type: 'string',
+  })
   phoneno: string;
 
   @property({
