@@ -1,2 +1,0 @@
-can u add these fields in profile 
-interests, hobbies, no_of_sisters_married, no_of_sisters, mothers_occupation, family_status, no_of_brothers_married, no_of_brothers, fathers_occupation, family_type
