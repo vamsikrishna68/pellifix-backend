@@ -1,12 +1,5 @@
 import {inject} from '@loopback/core';
-import {
-  Count,
-  CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
-  Where,
-} from '@loopback/repository';
+import {Filter, FilterExcludingWhere, repository} from '@loopback/repository';
 import {
   get,
   getModelSchemaRef,
@@ -17,6 +10,7 @@ import {
   response,
 } from '@loopback/rest';
 import {Profiles} from '../../models';
+import {ProfileValidate} from '../../profile-utils';
 import {ImagesRepository, ProfilesRepository} from '../../repositories';
 import {AuthUser} from '../../utils';
 
@@ -28,6 +22,8 @@ export class ProfilesController {
     public imagesRepository: ImagesRepository,
     @inject('authUser')
     public authUser: AuthUser,
+    @inject('profile-utils')
+    public profileValidate: ProfileValidate,
   ) {
     if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
@@ -148,6 +144,8 @@ export class ProfilesController {
     })
     profile: Profiles,
   ): Promise<void> {
-    await this.profilesRepository.updateById(this.authUser.id, profile);
+    const values = this.profileValidate.profileValidation(profile);
+    const pro = {...profile, ...values};
+    await this.profilesRepository.updateById(this.authUser.id, pro);
   }
 }

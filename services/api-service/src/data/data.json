@@ -1,0 +1,219 @@
+{
+  "GenderList": [
+    {"name": "Male", "value": 1, "id": 1},
+    {"name": "Female", "value": 2, "id": 2},
+    {"name": "Others", "value": 3, "id": 3}
+  ],
+  "MotherToungeList": [
+    {"value": 54, "name": "Angika", "id": 1},
+    {"value": 1, "name": "Arunachali", "id": 2},
+    {"value": 2, "name": "Assamese", "id": 3},
+    {"value": 3, "name": "Awadhi", "id": 4},
+    {"value": 4, "name": "Bengali", "id": 5},
+    {"value": 5, "name": "Bhojpuri", "id": 6},
+    {"value": 6, "name": "Brij", "id": 7},
+    {"value": 7, "name": "Bihari", "id": 8},
+    {"value": 53, "name": "Badaga", "id": 9},
+    {"value": 8, "name": "Chatisgarhi", "id": 10},
+    {"value": 9, "name": "Dogri", "id": 11},
+    {"value": 10, "name": "English", "id": 12},
+    {"value": 11, "name": "French", "id": 13},
+    {"value": 12, "name": "Garhwali", "id": 14},
+    {"value": 13, "name": "Garo", "id": 15},
+    {"value": 14, "name": "Gujarati", "id": 16},
+    {"value": 15, "name": "Haryanvi", "id": 17},
+    {"value": 16, "name": "Himachali/Pahari", "id": 18},
+    {"value": 17, "name": "Hindi", "id": 19},
+    {"value": 18, "name": "Kanauji", "id": 20},
+    {"value": 19, "name": "Kannada", "id": 21},
+    {"value": 20, "name": "Kashmiri", "id": 22},
+    {"value": 21, "name": "Khandesi", "id": 23},
+    {"value": 22, "name": "Khasi", "id": 24},
+    {"value": 23, "name": "Konkani", "id": 25},
+    {"value": 24, "name": "Koshali", "id": 26},
+    {"value": 25, "name": "Kumaoni", "id": 27},
+    {"value": 26, "name": "Kutchi", "id": 28},
+    {"value": 27, "name": "Lepcha", "id": 29},
+    {"value": 28, "name": "Ladacki", "id": 30},
+    {"value": 29, "name": "Magahi", "id": 31},
+    {"value": 30, "name": "Maithili", "id": 32},
+    {"value": 31, "name": "Malayalam", "id": 33},
+    {"value": 32, "name": "Manipuri", "id": 34},
+    {"value": 33, "name": "Marathi", "id": 35},
+    {"value": 34, "name": "Marwari", "id": 36},
+    {"value": 35, "name": "Miji", "id": 37},
+    {"value": 36, "name": "Mizo", "id": 38},
+    {"value": 37, "name": "Monpa", "id": 39},
+    {"value": 38, "name": "Nicobarese", "id": 40},
+    {"value": 39, "name": "Nepali", "id": 41},
+    {"value": 40, "name": "Oriya", "id": 42},
+    {"value": 41, "name": "Punjabi", "id": 43},
+    {"value": 42, "name": "Rajasthani", "id": 44},
+    {"value": 43, "name": "Sanskrit", "id": 45},
+    {"value": 44, "name": "Santhali", "id": 46},
+    {"value": 45, "name": "Sindhi", "id": 47},
+    {"value": 46, "name": "Sourashtra", "id": 48},
+    {"value": 47, "name": "Tamil", "id": 49},
+    {"value": 48, "name": "Telugu", "id": 50},
+    {"value": 49, "name": "Tripuri", "id": 51},
+    {"value": 50, "name": "Tulu", "id": 52},
+    {"value": 51, "name": "Urdu", "id": 53},
+    {"value": 55, "name": "Bagri Rajasthani", "id": 54},
+    {"value": 56, "name": "Dhundhari/Jaipuri", "id": 55},
+    {"value": 57, "name": "Gujari/Gojari", "id": 56},
+    {"value": 58, "name": "Harauti", "id": 57},
+    {"value": 59, "name": "Lambadi", "id": 58},
+    {"value": 60, "name": "Malvi", "id": 59},
+    {"value": 61, "name": "Mewari", "id": 60},
+    {"value": 62, "name": "Mewati/Ahirwati", "id": 61},
+    {"value": 63, "name": "Nimadi", "id": 62},
+    {"value": 64, "name": "Shekhawati", "id": 63},
+    {"value": 65, "name": "Wagdi", "id": 64}
+  ],
+  "Raasilist": [
+    {
+      "name": "Aries (Mesha)",
+      "native": "Mesha",
+      "english": "Aries",
+      "value": 1,
+      "id": 1
+    },
+    {
+      "name": "Taurus (Vrishabha)",
+      "native": "Vrishabha",
+      "english": "Taurus",
+      "value": 2,
+      "id": 2
+    },
+    {
+      "name": "Gemini (Mithuna)",
+      "native": "Mithuna",
+      "english": "Gemini",
+      "value": 3,
+      "id": 3
+    },
+    {
+      "name": "Cancer (Karka)",
+      "native": "Karka",
+      "english": "Cancer",
+      "value": 4,
+      "id": 4
+    },
+    {
+      "name": "Leo (Singha)",
+      "native": "Singha",
+      "english": "Leo",
+      "value": 5,
+      "id": 5
+    },
+    {
+      "name": "Virgo (Kanya)",
+      "native": "Kanya",
+      "english": "Virgo",
+      "value": 6,
+      "id": 6
+    },
+    {
+      "name": "Libra (Tula)",
+      "native": "Tula",
+      "english": "Libra",
+      "value": 7,
+      "id": 7
+    },
+    {
+      "name": "Scorpio (Vrushchika)",
+      "native": "Vrushchika",
+      "english": "Scorpio",
+      "value": 8,
+      "id": 8
+    },
+    {
+      "name": "Sagittarius (Dhanu)",
+      "native": "Dhanu",
+      "english": "Sagittarius",
+      "value": 9,
+      "id": 9
+    },
+    {
+      "name": "Capricorn (Makara)",
+      "native": "Makara",
+      "english": "Capricorn",
+      "value": 10,
+      "id": 10
+    },
+    {
+      "name": "Aquarius (Kumbha)",
+      "native": "Kumbha",
+      "english": "Aquarius",
+      "value": 11,
+      "id": 11
+    },
+    {
+      "name": "Pisces (Meena)",
+      "native": "Meena",
+      "english": "Pisces",
+      "value": 12,
+      "id": 12
+    }
+  ],
+  "NakshtramList": [
+    {"name": "Ashwini", "value": 1, "id": 1},
+    {"name": "Bharani", "value": 2, "id": 2},
+    {"name": "Krittika", "value": 3, "id": 3},
+    {"name": "Rohini", "value": 4, "id": 4},
+    {"name": "Mrigashira", "value": 5, "id": 5},
+    {"name": "Ardra", "value": 6, "id": 6},
+    {"name": "Punarvasu", "value": 7, "id": 7},
+    {"name": "Pushya", "value": 8, "id": 8},
+    {"name": "Ashlesha", "value": 9, "id": 9},
+    {"name": "Magha", "value": 10, "id": 10},
+    {"name": "Purva Phalguni", "value": 11, "id": 11},
+    {"name": "Uttara Phalguni", "value": 12, "id": 12},
+    {"name": "Hasta", "value": 13, "id": 13},
+    {"name": "Chitra", "value": 14, "id": 14},
+    {"name": "Swati", "value": 15, "id": 15},
+    {"name": "Vishaka", "value": 16, "id": 16},
+    {"name": "Anurada", "value": 17, "id": 17},
+    {"name": "Jyeshta", "value": 18, "id": 18},
+    {"name": "Mula", "value": 19, "id": 19},
+    {"name": "Purva Ashadha", "value": 20, "id": 20},
+    {"name": "Uttara Ashadha", "value": 21, "id": 21},
+    {"name": "Shravana", "value": 22, "id": 22},
+    {"name": "Dhanishta", "value": 23, "id": 23},
+    {"name": "Shatabhishak", "value": 24, "id": 24},
+    {"name": "Purva Bhadrapada", "value": 25, "id": 25},
+    {"name": "Uttara Bhadrapada", "value": 26, "id": 26},
+    {"name": "Revati", "value": 27, "id": 27}
+  ],
+  "PhysicalStatusList": [
+    {"name": "Normal", "value": 1, "id": 1},
+    {"name": "Physically Challenged", "value": 2, "id": 2}
+  ],
+  "SmokingHabitsList": [
+    {"name": "No", "value": 1, "id": 1},
+    {"name": "Yes", "value": 2, "id": 2},
+    {"name": "Occasionally", "value": 3, "id": 3}
+  ],
+  "BodyTypeList": [
+    {"name": "Slim", "value": 1, "id": 1},
+    {"name": "Average", "value": 2, "id": 2},
+    {"name": "Athletic", "value": 3, "id": 3},
+    {"name": "Heavy", "value": 4, "id": 4}
+  ],
+  "EatingHabitsList": [
+    {"name": "Vegetarian", "value": 1, "id": 1},
+    {"name": "Eggetarian", "value": 2, "id": 2},
+    {"name": "Non Vegetarian", "value": 3, "id": 3}
+  ],
+  "DrinkingHabitsList": [
+    {"name": "No", "value": 1, "id": 1},
+    {"name": "Yes", "value": 2, "id": 2},
+    {"name": "Social Drinking", "value": 3, "id": 3}
+  ],
+  "MaritalStatusList": [
+    {"name": "Single", "value": 1, "id": 1},
+    {"name": "Widowed", "value": 2, "id": 2},
+    {"name": "divorced", "value": 3, "id": 3},
+    {"name": "Separated", "value": 4, "id": 4}
+  ]
+}

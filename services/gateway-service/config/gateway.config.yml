@@ -12,6 +12,7 @@ apiEndpoints:
       # Admin panel URLs
       - "/cp/v1/admins*"
       - "/cp/v1/profiles*"
+      - "/cp/v1/employees/earnings*"
       # Image URLs
       - "/v1/pellifix/images*"
       - "/v1/profiles/images/uploads"
