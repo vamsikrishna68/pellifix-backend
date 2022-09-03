@@ -14,6 +14,7 @@ import {
 } from '../../utils';
 import {genJwtToken} from '../../services/jwt-token.service';
 import {sendMail} from '../../services/email.service';
+import {sendOtpSMS, verifyOtpSMS} from '../../services/twilio.service';
 export class CustomerController {
   constructor(
     @repository(PreferenceRepository)
@@ -22,7 +23,6 @@ export class CustomerController {
     public profilesRepository: ProfilesRepository,
   ) {}
 
-  staticOtp = '12345';
   @post('/v1/customer/register')
   async create(
     @requestBody({
@@ -70,10 +70,10 @@ export class CustomerController {
      * Insert the data
      */
     user.age = age(user.dob);
-    /**
-     * Static OTP
-     */
-    user.otp = this.staticOtp;
+
+    await sendOtpSMS(user.mobileno);
+    user.is_mobileno = false;
+
     const res = await this.profilesRepository.create({...user, password});
 
     /**
@@ -114,10 +114,12 @@ export class CustomerController {
     });
     if (!profile)
       throw new HttpErrors.UnprocessableEntity("User doesn't exist");
-    if (profile.otp !== pro.otp) {
+
+    const otpVerfication = await verifyOtpSMS(pro.mobileno, pro.otp);
+    if (!otpVerfication?.valid) {
       throw new HttpErrors.UnprocessableEntity("Otp doesn't match");
     }
-    await this.profilesRepository.updateById(profile.id, {otp: ''});
+    await this.profilesRepository.updateById(profile.id, {is_mobileno: true});
   }
 
   @patch('/v1/customer/otp/generate')
@@ -145,7 +147,7 @@ export class CustomerController {
     if (!profile) {
       throw new HttpErrors.UnprocessableEntity("User doesn't exist");
     }
-    await this.profilesRepository.updateById(profile.id, {otp: this.staticOtp});
+    await sendOtpSMS(pro.mobileno);
   }
 
   @post('/v1/customer/login')
