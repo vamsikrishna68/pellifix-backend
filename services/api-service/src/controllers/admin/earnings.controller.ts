@@ -11,7 +11,6 @@ export class EarningsController {
     @inject('authUser')
     public authUser: AuthUser,
   ) {
-    this.authUser.id = 1;
     if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
     }

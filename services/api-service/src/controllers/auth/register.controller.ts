@@ -61,14 +61,7 @@ export class CustomerController {
       );
     }
 
-    /**
-     * password hash
-     */
     password = genPasswordHash(password);
-
-    /**
-     * Insert the data
-     */
     user.age = age(user.dob);
 
     await sendOtpSMS(user.mobileno);
