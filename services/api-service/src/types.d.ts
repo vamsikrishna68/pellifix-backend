@@ -33,3 +33,12 @@ export interface Raasi {
   name: string;
   value: number;
 }
+export interface FileFields {
+  fieldname: string;
+  originalname: string;
+  newfilename: string;
+  encoding: string;
+  mimetype: string;
+  buffer: Buffer;
+  size: number;
+}

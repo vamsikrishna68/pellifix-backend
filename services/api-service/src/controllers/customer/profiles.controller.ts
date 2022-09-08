@@ -92,7 +92,7 @@ export class ProfilesController {
     filter?: FilterExcludingWhere<Profiles>,
   ): Promise<Object> {
     const image = await this.imagesRepository.findOne({
-      where: {pro_id: this.authUser.id, primary_pic: true},
+      where: {pro_id: this.authUser.id},
     });
 
     const profile = await this.profilesRepository.findById(
