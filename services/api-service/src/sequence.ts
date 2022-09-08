@@ -17,34 +17,6 @@ export class MySequence extends MiddlewareSequence {
       profile_id,
     };
 
-    /**
-     * download image from s3
-     */
-    const URL = request.originalUrl.indexOf('/v1/pellifix/images');
-    if (URL === 0) {
-      //s3 image download start
-      const reqUrl = request.originalUrl.split('/');
-      const key = reqUrl[reqUrl.length - 1];
-      const params = {
-        Bucket: process.env.AWS_BUCKET_NAME || '',
-        Key: key,
-      };
-      const basepath = path.join(__dirname, '../uploads');
-      if (!fs.existsSync(basepath)) {
-        fs.mkdirSync(basepath, {recursive: true});
-      }
-      if (!fs.existsSync(`${basepath}/${key}`)) {
-        const s3 = new AWS.S3({
-          region: process.env.AWS_REGION,
-          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-        });
-        const data: any = await s3.getObject(params).promise();
-        fs.writeFile(`${basepath}/${key}`, data.Body, () => {});
-      }
-      //s3 image download end
-    }
-
     context.bind('authUser').to(authUser);
     await super.handle(context);
   }
