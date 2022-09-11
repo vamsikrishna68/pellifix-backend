@@ -29,6 +29,11 @@ export class Profiles extends Entity {
   @property({
     type: 'string',
   })
+  surname?: string;
+
+  @property({
+    type: 'string',
+  })
   marital_status: string;
 
   @property({
@@ -40,6 +45,11 @@ export class Profiles extends Entity {
     type: 'date',
   })
   dob: string;
+
+  @property({
+    type: 'string',
+  })
+  time_of_birth: string;
 
   @property({
     type: 'string',
