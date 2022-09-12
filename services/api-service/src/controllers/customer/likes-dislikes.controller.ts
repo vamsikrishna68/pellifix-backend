@@ -26,7 +26,7 @@ export class LikesDislikesController {
     @inject('authUser')
     public authUser: AuthUser,
   ) {
-    this.authUser.id = 2;
+    this.authUser.id = 27;
     if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
     }
