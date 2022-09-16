@@ -9,7 +9,7 @@ apiEndpoints:
     paths:
       - "/v1/profile/password/change"
       - "/v1/profiles*"
-      - "/v1/users/likes-dislikes*"
+      - "/v1/users/shortlist*"
       # Admin panel URLs
       - "/cp/v1/admins*"
       - "/cp/v1/profiles*"

@@ -1,17 +1,17 @@
 import {inject} from '@loopback/core';
 import {DefaultCrudRepository} from '@loopback/repository';
 import {MysqlDbConnectionDataSource} from '../datasources';
-import {LikesDislikes, LikesDislikesRelations} from '../models';
+import {Shortlist, ShortlistRelations} from '../models';
 
-export class LikesDislikesRepository extends DefaultCrudRepository<
-  LikesDislikes,
-  typeof LikesDislikes.prototype.profile_id,
-  LikesDislikesRelations
+export class ShortlistRepository extends DefaultCrudRepository<
+  Shortlist,
+  typeof Shortlist.prototype.profile_id,
+  ShortlistRelations
 > {
   constructor(
     @inject('datasources.MysqlDbConnection')
     dataSource: MysqlDbConnectionDataSource,
   ) {
-    super(LikesDislikes, dataSource);
+    super(Shortlist, dataSource);
   }
 }
