@@ -1,6 +1,6 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model({name: 'likes_dislikes'})
+@model({name: 'shortlist'})
 export class Shortlist extends Entity {
   @property({
     type: 'number',
@@ -14,7 +14,7 @@ export class Shortlist extends Entity {
     type: 'number',
     required: true,
   })
-  liked_id: number;
+  short_id: number;
 
   @property({
     type: 'boolean',

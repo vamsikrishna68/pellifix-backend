@@ -18,6 +18,8 @@ import {
 import {Shortlist} from '../../models';
 import {ShortlistRepository} from '../../repositories';
 import {AuthUser} from '../../utils';
+import {CountAndData} from '../../types';
+import {replaceStaticValue} from '../profile-utils';
 
 export class ShortlistController {
   constructor(
@@ -52,7 +54,7 @@ export class ShortlistController {
     shortlist.profile_id = this.authUser.id;
 
     const alreadyLiked = await this.shortlistRepository.findOne({
-      where: {profile_id: this.authUser.id, liked_id: shortlist.liked_id},
+      where: {profile_id: this.authUser.id, short_id: shortlist.short_id},
     });
 
     if (alreadyLiked) {
@@ -69,8 +71,11 @@ export class ShortlistController {
     description: 'Shortlist model count',
     content: {'application/json': {schema: CountSchema}},
   })
-  async count(@param.where(Shortlist) where: Where<Shortlist>): Promise<Count> {
-    return this.shortlistRepository.count(where);
+  async count(): Promise<Count> {
+    return this.shortlistRepository.count({
+      profile_id: this.authUser.id,
+      is_liked: true,
+    });
   }
 
   @get('/v1/users/shortlist')
@@ -87,7 +92,31 @@ export class ShortlistController {
   })
   async find(
     @param.filter(Shortlist) filter?: Filter<Shortlist>,
-  ): Promise<Shortlist[]> {
-    return this.shortlistRepository.find(filter);
+  ): Promise<CountAndData> {
+    const short = await this.shortlistRepository.find({
+      where: {profile_id: this.authUser.id, is_liked: true},
+    });
+
+    if (!short.length) {
+      return {
+        count: 0,
+        data: [],
+      };
+    } else {
+      const ids = short.map(x => x.short_id);
+      const profiles = await this.shortlistRepository.getShortlist(ids);
+      const data = profiles.map(profile => {
+        const staticdata = replaceStaticValue(profile);
+        return {
+          ...profile,
+          ...staticdata,
+        };
+      });
+
+      return {
+        count: short.length,
+        data,
+      };
+    }
   }
 }

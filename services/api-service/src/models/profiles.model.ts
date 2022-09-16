@@ -129,11 +129,6 @@ export class Profiles extends Entity {
   @property({
     type: 'string',
   })
-  otp: string;
-
-  @property({
-    type: 'string',
-  })
   city: string;
 
   @property({
