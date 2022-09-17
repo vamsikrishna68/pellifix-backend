@@ -1,11 +1,5 @@
 import {inject} from '@loopback/core';
-import {
-  Count,
-  CountSchema,
-  Filter,
-  repository,
-  Where,
-} from '@loopback/repository';
+import {Count, CountSchema, Filter, repository} from '@loopback/repository';
 import {
   param,
   get,
@@ -79,17 +73,6 @@ export class ShortlistController {
   }
 
   @get('/v1/users/shortlist')
-  @response(200, {
-    description: 'Array of Shortlist model instances',
-    content: {
-      'application/json': {
-        schema: {
-          type: 'array',
-          items: getModelSchemaRef(Shortlist, {includeRelations: true}),
-        },
-      },
-    },
-  })
   async find(
     @param.filter(Shortlist) filter?: Filter<Shortlist>,
   ): Promise<CountAndData> {

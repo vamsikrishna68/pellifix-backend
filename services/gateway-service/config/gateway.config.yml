@@ -10,6 +10,7 @@ apiEndpoints:
       - "/v1/profile/password/change"
       - "/v1/profiles*"
       - "/v1/users/shortlist*"
+      - "/v1/users/profile-views*"
       # Admin panel URLs
       - "/cp/v1/admins*"
       - "/cp/v1/profiles*"
