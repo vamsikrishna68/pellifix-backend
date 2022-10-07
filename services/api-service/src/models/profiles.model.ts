@@ -316,6 +316,16 @@ export class Profiles extends Entity {
   })
   updated_at?: string;
 
+  @property({
+    type: 'string',
+  })
+  mother_tongue: string;
+
+  @property({
+    type: 'string',
+  })
+  citizen: string;
+
   constructor(data?: Partial<Profiles>) {
     super(data);
   }

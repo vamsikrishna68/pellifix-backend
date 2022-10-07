@@ -88,20 +88,18 @@ export class ProfilesController {
     @param.filter(Profiles, {exclude: 'where'})
     filter?: FilterExcludingWhere<Profiles>,
   ): Promise<Object> {
-    const image = await this.imagesRepository.findOne({
+    let proimgs = await this.imagesRepository.find({
       where: {pro_id: this.authUser.id},
+      fields: {url: true},
     });
 
-    const profile = await this.profilesRepository.findById(
-      this.authUser.id,
-      filter,
-    );
+    const profile = await this.profilesRepository.findById(this.authUser.id, {
+      fields: {password: false, forget_hash: false},
+    });
 
-    if (image) {
-      profile.image = image.url;
-    }
+    const images = proimgs.length ? proimgs.map(x => x.url) : [];
 
-    return {...profile};
+    return {...profile, images};
   }
 
   @get('/v1/profiles/address/{id}')
