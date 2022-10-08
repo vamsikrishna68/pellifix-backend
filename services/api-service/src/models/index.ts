@@ -5,3 +5,5 @@ export * from './images.model';
 export * from './earnings.model';
 export * from './shortlist.model';
 export * from './profile-views.model';
+export * from './profile-chats.model';
+export * from './profile-messages.model';
