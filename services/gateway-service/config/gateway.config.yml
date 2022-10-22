@@ -16,6 +16,7 @@ apiEndpoints:
       - "/cp/v1/admins*"
       - "/cp/v1/profiles*"
       - "/cp/v1/employees/earnings*"
+      - "/cp/v1/sub-ordinates*"
       # Image URLs
       - "/v1/pellifix/images*"
       - "/v1/profiles/images/uploads"
