@@ -36,6 +36,10 @@ apiEndpoints:
       - "/cp/v1/admin/auth/login"
       - "/cp/v1/admin/auth/password/reset"
       - "/cp/v1/admin/auth/password/update*"
+        # Sub ordinate URLs
+      - "/cp/v1/sub-ordinate/auth/login"
+      - "/cp/v1/sub-ordinate/auth/password/reset"
+      - "/cp/v1/sub-ordinate/auth/password/update*"
 
 serviceEndpoints:
   matrimonysrv:

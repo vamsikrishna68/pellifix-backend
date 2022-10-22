@@ -16,7 +16,7 @@ import {AdminRepository, EarningsRepository} from '../../repositories';
 import {AuthUser} from '../../utils';
 import {ROLES} from '../utils';
 
-export class AdminController {
+export class SubOrdinateController {
   constructor(
     @repository(AdminRepository)
     public adminRepository: AdminRepository,
