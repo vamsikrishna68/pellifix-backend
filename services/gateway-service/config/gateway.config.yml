@@ -40,6 +40,10 @@ apiEndpoints:
       - "/cp/v1/sub-ordinate/auth/login"
       - "/cp/v1/sub-ordinate/auth/password/reset"
       - "/cp/v1/sub-ordinate/auth/password/update*"
+        # Associates URLs
+      - "/cp/v1/associates/auth/login"
+      - "/cp/v1/associates/auth/password/reset"
+      - "/cp/v1/associates/auth/password/update*"
 
 serviceEndpoints:
   matrimonysrv:
