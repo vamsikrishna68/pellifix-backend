@@ -20,6 +20,8 @@ apiEndpoints:
       # Image URLs
       - "/v1/pellifix/images*"
       - "/v1/profiles/images/uploads"
+      # Razorpay
+      - "/v1/razor/payment"
 
   matrimonypublic:
     host: ${ENDPOINT}
