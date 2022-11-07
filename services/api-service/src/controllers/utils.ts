@@ -9,3 +9,6 @@ export const ROLES = {
   SUB_ORDINATES: 2,
   ASSOCIATES: 3,
 };
+
+export const staticImageURL =
+  'https://img.pellifix.com/static/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpeg';

@@ -28,6 +28,7 @@ apiEndpoints:
     paths:
       - "/v1/health-check"
       - "/v1/reference/drop-down"
+      - "/v1/reference/states"
       - "/v1/customer/register"
       - "/v1/customer/login"
       - "/v1/customer/otp/verify"

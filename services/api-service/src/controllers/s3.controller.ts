@@ -154,7 +154,7 @@ export class StorageController {
     files: FileFields[],
   ): Promise<string[]> {
     const imageUrls: string[] = [];
-    const result = s3Data.map(x => {
+    let result = s3Data.map(x => {
       const file = files.find(v => 'profiles/' + v.newfilename === x.Key);
 
       const url = 'https://img.pellifix.com/' + x.Key;
@@ -165,9 +165,12 @@ export class StorageController {
         orginal_name: file?.originalname || '',
         new_name: file?.newfilename || '',
         url,
+        primary_pic: false,
         size: String(file?.size) || '',
       };
     });
+
+    result[0].primary_pic = true;
 
     await this.imagesRepository.createAll(result);
     return imageUrls;

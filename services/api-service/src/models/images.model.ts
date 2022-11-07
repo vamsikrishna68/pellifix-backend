@@ -20,6 +20,11 @@ export class Images extends Entity {
   orginal_name: string;
 
   @property({
+    type: 'boolean',
+  })
+  primary_pic: boolean;
+
+  @property({
     type: 'string',
   })
   new_name: string;
