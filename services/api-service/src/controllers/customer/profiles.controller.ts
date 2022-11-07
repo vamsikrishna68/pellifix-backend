@@ -98,6 +98,7 @@ export class ProfilesController {
       fields: {password: false, forget_hash: false},
     });
 
+    //static image set
     profile.image = proimgs.length
       ? proimgs.find(x => x.primary_pic === true)?.url || staticImageURL
       : staticImageURL;
