@@ -1,18 +1,17 @@
 import {inject} from '@loopback/core';
-import {DefaultCrudRepository} from '@loopback/repository';
+import {DefaultCrudRepository, Filter} from '@loopback/repository';
 import {MysqlDbConnectionDataSource} from '../datasources';
-import {Profiles, ProfilesRelations} from '../models';
-
-export class ProfilesRepository extends DefaultCrudRepository<
-  Profiles,
-  typeof Profiles.prototype.id,
-  ProfilesRelations
+import {Profiles, Shortlist, ShortlistRelations} from '../models';
+export class ShortlistRepository extends DefaultCrudRepository<
+  Shortlist,
+  typeof Shortlist.prototype.profile_id,
+  ShortlistRelations
 > {
   constructor(
     @inject('datasources.MysqlDbConnection')
     dataSource: MysqlDbConnectionDataSource,
   ) {
-    super(Profiles, dataSource);
+    super(Shortlist, dataSource);
   }
 
   columns = [
@@ -49,10 +48,8 @@ export class ProfilesRepository extends DefaultCrudRepository<
     'family_type',
   ];
 
-  async getHoroscopic(gender: string, ids: number[]): Promise<Profiles[]> {
-    let query = `SELECT ${
-      this.columns
-    } FROM profile WHERE gender = ${gender} AND star IN (${ids.join()})`;
+  async getShortlist(ids: number[], filter?: Filter): Promise<Profiles[]> {
+    let query = `SELECT ${this.columns} FROM profile WHERE id IN (${ids})`;
     return this.dataSource.execute(query);
   }
 }

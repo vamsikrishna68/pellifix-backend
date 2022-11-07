@@ -9,20 +9,26 @@ apiEndpoints:
     paths:
       - "/v1/profile/password/change"
       - "/v1/profiles*"
-      - "/v1/users/likes-dislikes*"
+      - "/v1/users/shortlist*"
+      - "/v1/users/profile-views*"
+      - "/v1/users/chats*"
       # Admin panel URLs
       - "/cp/v1/admins*"
       - "/cp/v1/profiles*"
       - "/cp/v1/employees/earnings*"
+      - "/cp/v1/sub-ordinates*"
       # Image URLs
       - "/v1/pellifix/images*"
       - "/v1/profiles/images/uploads"
+      # Razorpay
+      - "/v1/razor/payment"
 
   matrimonypublic:
     host: ${ENDPOINT}
     paths:
       - "/v1/health-check"
       - "/v1/reference/drop-down"
+      - "/v1/reference/states"
       - "/v1/customer/register"
       - "/v1/customer/login"
       - "/v1/customer/otp/verify"
@@ -33,6 +39,14 @@ apiEndpoints:
       - "/cp/v1/admin/auth/login"
       - "/cp/v1/admin/auth/password/reset"
       - "/cp/v1/admin/auth/password/update*"
+        # Sub ordinate URLs
+      - "/cp/v1/sub-ordinate/auth/login"
+      - "/cp/v1/sub-ordinate/auth/password/reset"
+      - "/cp/v1/sub-ordinate/auth/password/update*"
+        # Associates URLs
+      - "/cp/v1/associates/auth/login"
+      - "/cp/v1/associates/auth/password/reset"
+      - "/cp/v1/associates/auth/password/update*"
 
 serviceEndpoints:
   matrimonysrv:

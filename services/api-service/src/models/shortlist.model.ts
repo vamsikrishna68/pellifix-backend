@@ -1,7 +1,7 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model({name: 'likes_dislikes'})
-export class LikesDislikes extends Entity {
+@model({name: 'shortlist'})
+export class Shortlist extends Entity {
   @property({
     type: 'number',
     id: true,
@@ -14,7 +14,7 @@ export class LikesDislikes extends Entity {
     type: 'number',
     required: true,
   })
-  liked_id: number;
+  short_id: number;
 
   @property({
     type: 'boolean',
@@ -22,13 +22,13 @@ export class LikesDislikes extends Entity {
   })
   is_liked: boolean;
 
-  constructor(data?: Partial<LikesDislikes>) {
+  constructor(data?: Partial<Shortlist>) {
     super(data);
   }
 }
 
-export interface LikesDislikesRelations {
+export interface ShortlistRelations {
   // describe navigational properties here
 }
 
-export type LikesDislikesWithRelations = LikesDislikes & LikesDislikesRelations;
+export type ShortlistWithRelations = Shortlist & ShortlistRelations;

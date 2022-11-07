@@ -13,7 +13,7 @@ export class MySequence extends MiddlewareSequence {
     const profile_id: any = request.headers.profileid;
 
     const authUser: AuthUser = {
-      id,
+      id: +id,
       profile_id,
     };
 

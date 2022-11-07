@@ -1,6 +1,6 @@
 import {get, response} from '@loopback/rest';
 import * as data from '../data/data.json';
-const stringfy = JSON.stringify(data);
+import * as states from '..//data/states.json';
 
 export class ReferenceController {
   constructor() {}
@@ -10,6 +10,14 @@ export class ReferenceController {
     description: 'Front end can use the drop down list for static values',
   })
   async dropDown(): Promise<Object> {
-    return JSON.parse(stringfy);
+    return data;
+  }
+
+  @get('/v1/reference/states')
+  @response(200, {
+    description: 'Front end can use the drop down list for static values',
+  })
+  async states(): Promise<Object> {
+    return states;
   }
 }

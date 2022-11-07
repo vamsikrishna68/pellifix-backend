@@ -129,11 +129,6 @@ export class Profiles extends Entity {
   @property({
     type: 'string',
   })
-  otp: string;
-
-  @property({
-    type: 'string',
-  })
   city: string;
 
   @property({
@@ -320,6 +315,16 @@ export class Profiles extends Entity {
     type: 'date',
   })
   updated_at?: string;
+
+  @property({
+    type: 'string',
+  })
+  mother_tongue: string;
+
+  @property({
+    type: 'string',
+  })
+  citizen: string;
 
   constructor(data?: Partial<Profiles>) {
     super(data);

@@ -12,6 +12,7 @@ import {
 import {Profiles} from '../../models';
 import {ImagesRepository, ProfilesRepository} from '../../repositories';
 import {AuthUser} from '../../utils';
+import {staticImageURL} from '../utils';
 
 export class ProfilesController {
   constructor(
@@ -88,20 +89,23 @@ export class ProfilesController {
     @param.filter(Profiles, {exclude: 'where'})
     filter?: FilterExcludingWhere<Profiles>,
   ): Promise<Object> {
-    const image = await this.imagesRepository.findOne({
+    let proimgs = await this.imagesRepository.find({
       where: {pro_id: this.authUser.id},
+      fields: {url: true},
     });
 
-    const profile = await this.profilesRepository.findById(
-      this.authUser.id,
-      filter,
-    );
+    const profile = await this.profilesRepository.findById(this.authUser.id, {
+      fields: {password: false, forget_hash: false},
+    });
 
-    if (image) {
-      profile.image = image.url;
-    }
+    //static image set
+    profile.image = proimgs.length
+      ? proimgs.find(x => x.primary_pic === true)?.url || staticImageURL
+      : staticImageURL;
 
-    return {...profile};
+    const images = proimgs.length ? proimgs.map(x => x.url) : [];
+
+    return {...profile, images};
   }
 
   @get('/v1/profiles/address/{id}')

@@ -3,6 +3,10 @@ export interface StaticValue {
   name: string;
   value: number;
 }
+export interface CountAndData {
+  count: number;
+  data: Object;
+}
 
 export interface ReligionHead {
   id: number;

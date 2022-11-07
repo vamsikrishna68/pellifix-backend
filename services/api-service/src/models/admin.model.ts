@@ -17,6 +17,22 @@ export class Admin extends Entity {
   @property({
     type: 'string',
   })
+  name: string;
+
+  @property({
+    type: 'number',
+    required: true,
+  })
+  role_id: number;
+
+  @property({
+    type: 'date',
+  })
+  dob: string;
+
+  @property({
+    type: 'string',
+  })
   password: string;
 
   @property({
@@ -31,9 +47,34 @@ export class Admin extends Entity {
   phone?: string;
 
   @property({
+    type: 'date',
+  })
+  date_of_joining?: string;
+
+  @property({
     type: 'string',
   })
   address?: string;
+
+  @property({
+    type: 'string',
+  })
+  candiate_referal_code?: string;
+
+  @property({
+    type: 'string',
+  })
+  designation?: string;
+
+  @property({
+    type: 'boolean',
+  })
+  edit_access: boolean;
+
+  @property({
+    type: 'boolean',
+  })
+  payment_permission: boolean;
 
   @property({
     type: 'number',
