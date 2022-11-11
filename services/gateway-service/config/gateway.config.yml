@@ -12,6 +12,7 @@ apiEndpoints:
       - "/v1/users/shortlist*"
       - "/v1/users/profile-views*"
       - "/v1/users/chats*"
+      - "/v1/profile/payment/page-viewed"
       # Admin panel URLs
       - "/cp/v1/admins*"
       - "/cp/v1/profiles*"

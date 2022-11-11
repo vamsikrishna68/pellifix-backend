@@ -8,6 +8,7 @@ import {
   requestBody,
   response,
   HttpErrors,
+  post,
 } from '@loopback/rest';
 import {Preference} from '../../models';
 import {PreferenceRepository} from '../../repositories';
@@ -28,17 +29,31 @@ export class PreferenceController {
   @get('/v1/profile/preferences')
   @response(200, {
     description: 'Preference model instance',
-    content: {
-      'application/json': {
-        schema: getModelSchemaRef(Preference, {includeRelations: true}),
-      },
-    },
   })
-  async findById(
-    @param.filter(Preference, {exclude: 'where'})
-    filter?: FilterExcludingWhere<Preference>,
-  ): Promise<Preference> {
-    return this.preferenceRepository.findById(this.authUser.id, filter);
+  async findById(): Promise<Preference> {
+    const profile = await this.preferenceRepository.findById(this.authUser.id);
+    return profile;
+  }
+
+  @post('/v1/profile/preferences')
+  @response(200, {
+    description: 'Create peference',
+  })
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Preference, {
+            partial: true,
+            exclude: ['pro_id'],
+          }),
+        },
+      },
+    })
+    preference: Preference,
+  ): Promise<void> {
+    preference.pro_id = this.authUser.id;
+    const pro = await this.preferenceRepository.create(preference);
   }
 
   @patch('/v1/profile/preferences')

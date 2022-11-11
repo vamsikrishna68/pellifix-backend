@@ -7,3 +7,4 @@ export * from './shortlist.repository';
 export * from './profile-views.repository';
 export * from './profile-chats.repository';
 export * from './profile-messages.repository';
+export * from './payment-page-viewed.repository';
