@@ -326,6 +326,11 @@ export class Profiles extends Entity {
   })
   citizen: string;
 
+  @property({
+    type: 'string',
+  })
+  district: string;
+
   constructor(data?: Partial<Profiles>) {
     super(data);
   }
