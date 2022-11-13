@@ -70,7 +70,7 @@ export class Preference extends Entity {
   @property({
     type: 'string',
   })
-  cast?: string;
+  caste?: string;
 
   @property({
     type: 'string',
@@ -81,6 +81,11 @@ export class Preference extends Entity {
     type: 'string',
   })
   star?: string;
+
+  @property({
+    type: 'string',
+  })
+  zodiac?: string;
 
   @property({
     type: 'string',
@@ -111,6 +116,21 @@ export class Preference extends Entity {
     type: 'string',
   })
   looking_for?: string;
+
+  @property({
+    type: 'string',
+  })
+  country?: string;
+
+  @property({
+    type: 'string',
+  })
+  state?: string;
+
+  @property({
+    type: 'string',
+  })
+  district?: string;
 
   constructor(data?: Partial<Preference>) {
     super(data);
