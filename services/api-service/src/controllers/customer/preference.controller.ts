@@ -61,7 +61,6 @@ export class PreferenceController {
     description: 'Preference PATCH success',
   })
   async updateById(
-    @param.path.number('id') id: number,
     @requestBody({
       content: {
         'application/json': {
