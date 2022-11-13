@@ -33,16 +33,14 @@ export class Preference extends Entity {
   height?: object;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  marital_status?: string[];
+  marital_status?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  mother_tongue?: string[];
+  mother_tongue?: string;
 
   @property({
     type: 'string',
@@ -50,22 +48,19 @@ export class Preference extends Entity {
   physical_status?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  eating_habits?: string[];
+  eating_habits?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  drinking_habits?: string[];
+  drinking_habits?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  smoking_habits?: string[];
+  smoking_habits?: string;
 
   @property({
     type: 'string',
@@ -73,40 +68,34 @@ export class Preference extends Entity {
   religion?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  cast?: string[];
+  cast?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  dosham?: string[];
+  dosham?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  star?: string[];
+  star?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  education?: string[];
+  education?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  employed_in?: string[];
+  employed_in?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  occupation?: string[];
+  occupation?: string;
 
   @property({
     type: 'string',
@@ -114,10 +103,9 @@ export class Preference extends Entity {
   annual_income?: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
   })
-  location?: string[];
+  location?: string;
 
   @property({
     type: 'string',
