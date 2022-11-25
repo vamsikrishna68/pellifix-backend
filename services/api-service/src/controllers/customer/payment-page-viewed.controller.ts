@@ -21,7 +21,6 @@ export class PaymentPageViewedController {
     @inject('authUser')
     public authUser: AuthUser,
   ) {
-    this.authUser.id = 2;
     if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
     }

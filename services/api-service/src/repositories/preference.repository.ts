@@ -2,6 +2,7 @@ import {inject} from '@loopback/core';
 import {DefaultCrudRepository} from '@loopback/repository';
 import {MysqlDbConnectionDataSource} from '../datasources';
 import {Preference, PreferenceRelations} from '../models';
+import {profileColumns} from '../data/sql-query';
 
 export class PreferenceRepository extends DefaultCrudRepository<
   Preference,
@@ -15,37 +16,8 @@ export class PreferenceRepository extends DefaultCrudRepository<
     super(Preference, dataSource);
   }
 
-  columns = [
-    'id',
-    'profile_id',
-    'profile_creater',
-    'name',
-    'marital_status',
-    'body_type',
-    'dob',
-    'age',
-    'physical_status',
-    'height',
-    'weight',
-    'religion',
-    'caste',
-    'sub_caste',
-    'zodiac',
-    'star',
-    'country',
-    'city',
-    'state',
-    'education',
-    'occupation',
-    'image',
-    'about_me',
-    'is_membership',
-    'gender',
-    'profession',
-  ];
-
   async getDailyRecomentation(gender: string, filter: Preference) {
-    let query = `SELECT ${this.columns} FROM profile WHERE gender = '${gender}' `;
+    let query = `SELECT ${profileColumns} FROM profile WHERE gender = '${gender}' `;
     if (filter) {
       if (filter.age) {
         const age: any = filter.age;
