@@ -5,7 +5,6 @@ export const genProfileId = (num: number) => {
 
 export interface AuthUser {
   id: number;
-  profile_id: string;
 }
 
 export const getRandomString = (length = 10) =>

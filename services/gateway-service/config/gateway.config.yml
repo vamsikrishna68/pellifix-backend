@@ -85,7 +85,6 @@ pipelines:
               headers:
                 add:
                   userid: req.user.id
-                  profileid: req.user.profile_id
       - proxy:
           - action:
               serviceEndpoint: matrimonysrv

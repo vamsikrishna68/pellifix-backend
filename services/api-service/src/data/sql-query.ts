@@ -30,4 +30,5 @@ export const profileColumns = [
   'gender',
   'profession',
   'family_type',
+  'mother_tongue',
 ];

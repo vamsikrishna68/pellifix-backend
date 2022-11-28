@@ -130,6 +130,7 @@ export class AdminProfilesController {
     /**
      * Generate random id for customer and update in that profile
      */
+
     const profile_id = 'PM' + genProfileId(res.id!);
     await this.profilesRepository.updateById(res.id, {profile_id});
     return {profile_id: profile_id};
