@@ -14,6 +14,7 @@ apiEndpoints:
       - "/v1/profile/preferences*"
       - "/v1/users/chats*"
       - "/v1/profile/payment/page-viewed"
+      - "/v1/matches*"
       # Admin panel URLs
       - "/cp/v1/admins*"
       - "/cp/v1/profiles*"

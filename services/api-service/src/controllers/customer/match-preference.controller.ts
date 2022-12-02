@@ -10,6 +10,8 @@ import {
 import {Profiles} from '../../models';
 import {PreferenceRepository, ProfilesRepository} from '../../repositories';
 import {AuthUser} from '../../utils';
+import {replaceStaticValue} from '../profile-utils';
+import {GENDER} from '../utils';
 
 export class DailyRecomController {
   constructor(
@@ -25,7 +27,7 @@ export class DailyRecomController {
     }
   }
 
-  @get('/v1/profiles/daily-recom')
+  @get('/v1/matches/preference')
   @response(200, {
     description: 'Array of Profiles model instances',
     content: {
@@ -37,21 +39,28 @@ export class DailyRecomController {
       },
     },
   })
-  async find(): Promise<Object[]> {
-    const profile = await this.profilesRepository.findById(this.authUser.id, {
+  async find(
+    @param.filter(Profiles) filter?: Filter<Profiles>,
+  ): Promise<Object[]> {
+    const pro = await this.profilesRepository.findById(this.authUser.id, {
       fields: {password: false},
     });
-
     const preference = await this.preferenceRepository.findById(
       this.authUser.id,
     );
-
-    const gender = profile.gender === 'MALE' ? 'FEMALE' : 'MALE';
-
-    const data = await this.preferenceRepository.getDailyRecomentation(
+    const gender = pro.gender === GENDER.MALE ? GENDER.FEMALE : GENDER.MALE;
+    const profiles = await this.preferenceRepository.getDailyRecomentation(
       gender,
       preference,
     );
-    return [];
+
+    const data = profiles.map(profile => {
+      const staticdata = replaceStaticValue(profile);
+      return {
+        ...profile,
+        ...staticdata,
+      };
+    });
+    return [{data}];
   }
 }

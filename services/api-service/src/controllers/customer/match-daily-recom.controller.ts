@@ -8,17 +8,17 @@ import {
   response,
 } from '@loopback/rest';
 import {Profiles} from '../../models';
-import {ProfilesRepository} from '../../repositories';
-import {startMatch} from '../../data/star-match';
-import {GENDER} from '../utils';
+import {PreferenceRepository, ProfilesRepository} from '../../repositories';
 import {AuthUser} from '../../utils';
 import {replaceStaticValue} from '../profile-utils';
+import {GENDER} from '../utils';
 
-export class HoroscopicMatchController {
+export class DailyRecomController {
   constructor(
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,
-
+    @repository(PreferenceRepository)
+    public preferenceRepository: PreferenceRepository,
     @inject('authUser')
     public authUser: AuthUser,
   ) {
@@ -27,7 +27,7 @@ export class HoroscopicMatchController {
     }
   }
 
-  @get('/v1/profiles/horoscopic-match')
+  @get('/v1/matches/daily')
   @response(200, {
     description: 'Array of Profiles model instances',
     content: {
@@ -39,17 +39,21 @@ export class HoroscopicMatchController {
       },
     },
   })
-  async find(): Promise<Object[]> {
-    const profile = await this.profilesRepository.findById(this.authUser.id, {
+  async find(
+    @param.filter(Profiles) filter?: Filter<Profiles>,
+  ): Promise<Object[]> {
+    const pro = await this.profilesRepository.findById(this.authUser.id, {
       fields: {password: false},
     });
-    const gender = profile.gender === GENDER.MALE ? GENDER.FEMALE : GENDER.MALE;
-    const matchStartIds = startMatch[Number(profile.star)];
-
-    const profiles = await this.profilesRepository.getHoroscopic(
-      gender,
-      matchStartIds,
+    const preference = await this.preferenceRepository.findById(
+      this.authUser.id,
     );
+    const gender = pro.gender === GENDER.MALE ? GENDER.FEMALE : GENDER.MALE;
+    const profiles = await this.preferenceRepository.getDailyRecomentation(
+      gender,
+      preference,
+    );
+
     const data = profiles.map(profile => {
       const staticdata = replaceStaticValue(profile);
       return {
@@ -57,7 +61,6 @@ export class HoroscopicMatchController {
         ...staticdata,
       };
     });
-
-    return data;
+    return [{data}];
   }
 }

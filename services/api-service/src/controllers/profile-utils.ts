@@ -1,4 +1,5 @@
 import * as STATIC_DATA from '../data/data.json';
+import * as STATE from '../data/states.json';
 import {Profiles} from '../models';
 
 export const replaceStaticValue = (profile: Profiles): Partial<Profiles> => {
@@ -35,6 +36,11 @@ export const replaceStaticValue = (profile: Profiles): Partial<Profiles> => {
     profession: findValue(profile.profession, STATIC_DATA.PROFESSION),
     family_status: findValue(profile.family_status, STATIC_DATA.FAMILY_STATUS),
     family_type: findValue(profile.family_type, STATIC_DATA.FAMILY_TYPE),
+    mother_tongue: findValue(
+      profile.mother_tongue,
+      STATIC_DATA.MOTHER_TOUNGE_LIST,
+    ),
+    state: findValue(profile.state, STATE.STATES),
   };
 };
 
