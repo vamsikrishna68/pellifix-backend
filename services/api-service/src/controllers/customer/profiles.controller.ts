@@ -12,6 +12,7 @@ import {
 import {Profiles} from '../../models';
 import {ImagesRepository, ProfilesRepository} from '../../repositories';
 import {AuthUser} from '../../utils';
+import {replaceStaticValue} from '../profile-utils';
 import {staticImageURL} from '../utils';
 
 export class ProfilesController {
@@ -94,7 +95,7 @@ export class ProfilesController {
       fields: {url: true},
     });
 
-    const profile = await this.profilesRepository.findById(this.authUser.id, {
+    let profile = await this.profilesRepository.findById(this.authUser.id, {
       fields: {password: false, forget_hash: false},
     });
 
@@ -103,9 +104,11 @@ export class ProfilesController {
       ? proimgs.find(x => x.primary_pic === true)?.url || staticImageURL
       : staticImageURL;
 
+    const data = {...profile, ...replaceStaticValue(profile)};
+
     const images = proimgs.length ? proimgs.map(x => x.url) : [];
 
-    return {...profile, images};
+    return {...data, images};
   }
 
   @get('/v1/profiles/address/{id}')
