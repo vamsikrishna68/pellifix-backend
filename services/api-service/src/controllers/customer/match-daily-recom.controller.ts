@@ -41,7 +41,7 @@ export class DailyRecomController {
   })
   async find(
     @param.filter(Profiles) filter?: Filter<Profiles>,
-  ): Promise<Object[]> {
+  ): Promise<Object> {
     const pro = await this.profilesRepository.findById(this.authUser.id, {
       fields: {password: false},
     });
@@ -61,6 +61,8 @@ export class DailyRecomController {
         ...staticdata,
       };
     });
-    return [{data}];
+    return {
+      data,
+    };
   }
 }

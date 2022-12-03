@@ -32,13 +32,12 @@ export class HoroscopicMatchController {
       },
     },
   })
-  async find(): Promise<Object[]> {
+  async find(): Promise<Object> {
     const profile = await this.profilesRepository.findById(this.authUser.id, {
       fields: {password: false},
     });
     const gender = profile.gender === GENDER.MALE ? GENDER.FEMALE : GENDER.MALE;
     const matchStartIds = startMatch[Number(profile.star)];
-    console.log(matchStartIds);
 
     const profiles = await this.profilesRepository.getHoroscopic(
       gender,
@@ -52,6 +51,6 @@ export class HoroscopicMatchController {
       };
     });
 
-    return data;
+    return {data};
   }
 }
