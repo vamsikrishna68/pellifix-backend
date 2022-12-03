@@ -13,7 +13,7 @@ import {AuthUser} from '../../utils';
 import {replaceStaticValue} from '../profile-utils';
 import {GENDER} from '../utils';
 
-export class DailyRecomController {
+export class PreferenceMatchController {
   constructor(
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,

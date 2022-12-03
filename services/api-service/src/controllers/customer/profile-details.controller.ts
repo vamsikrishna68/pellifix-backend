@@ -5,16 +5,15 @@ import {
   getModelSchemaRef,
   HttpErrors,
   param,
-  patch,
-  requestBody,
   response,
 } from '@loopback/rest';
 import {Profiles} from '../../models';
 import {ImagesRepository, ProfilesRepository} from '../../repositories';
 import {AuthUser} from '../../utils';
+import {replaceStaticValue} from '../profile-utils';
 import {staticImageURL} from '../utils';
 
-export class ProfilesController {
+export class ProfilesDetailsController {
   constructor(
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,
@@ -28,7 +27,7 @@ export class ProfilesController {
     }
   }
 
-  @get('/v1/profiles')
+  @get('/v1/profiles/details/{id}')
   @response(200, {
     description: 'Profiles model instance',
     content: {
@@ -38,15 +37,16 @@ export class ProfilesController {
     },
   })
   async findById(
+    @param.path.number('id') id: number,
     @param.filter(Profiles, {exclude: 'where'})
     filter?: FilterExcludingWhere<Profiles>,
   ): Promise<Object> {
     let proimgs = await this.imagesRepository.find({
-      where: {pro_id: this.authUser.id},
+      where: {pro_id: id},
       fields: {url: true},
     });
 
-    let profile = await this.profilesRepository.findById(this.authUser.id, {
+    let profile = await this.profilesRepository.findById(id, {
       fields: {password: false, forget_hash: false},
     });
 
@@ -55,33 +55,9 @@ export class ProfilesController {
       ? proimgs.find(x => x.primary_pic === true)?.url || staticImageURL
       : staticImageURL;
 
+    const data = {...profile, ...replaceStaticValue(profile)};
     const images = proimgs.length ? proimgs.map(x => x.url) : [];
 
-    return {...profile, images};
-  }
-
-  @patch('/v1/profiles')
-  async changePassowrd(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Profiles, {
-            includeRelations: false,
-            partial: true,
-            exclude: [
-              'id',
-              'password',
-              'created_at',
-              'created_by',
-              'updated_at',
-              'updated_by',
-            ],
-          }),
-        },
-      },
-    })
-    profile: Profiles,
-  ): Promise<void> {
-    await this.profilesRepository.updateById(this.authUser.id, profile);
+    return {...data, images};
   }
 }
