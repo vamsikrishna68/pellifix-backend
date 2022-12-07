@@ -1,6 +1,6 @@
 export const profileColumns = [
   'id',
-  'profile_id',
+  'p.profile_id',
   'profile_creater',
   'name',
   'marital_status',
@@ -31,4 +31,5 @@ export const profileColumns = [
   'profession',
   'family_type',
   'mother_tongue',
+  'sh.is_liked',
 ];

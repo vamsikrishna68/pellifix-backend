@@ -44,7 +44,7 @@ export class ShortlistController {
       },
     })
     shortlist: Shortlist,
-  ): Promise<void> {
+  ): Promise<Object> {
     shortlist.profile_id = this.authUser.id;
 
     const alreadyLiked = await this.shortlistRepository.findOne({
@@ -58,6 +58,14 @@ export class ShortlistController {
     } else {
       await this.shortlistRepository.create(shortlist);
     }
+    return {
+      is_liked: shortlist.is_liked,
+      message: `${
+        shortlist.is_liked
+          ? 'Profile shortlisted successfully'
+          : 'Profile removed from shorlist'
+      }`,
+    };
   }
 
   @get('/v1/users/shortlist/count')

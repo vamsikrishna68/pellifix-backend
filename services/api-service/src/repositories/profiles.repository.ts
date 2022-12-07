@@ -16,8 +16,12 @@ export class ProfilesRepository extends DefaultCrudRepository<
     super(Profiles, dataSource);
   }
 
-  async getHoroscopic(gender: string, ids: number[]): Promise<Profiles[]> {
-    let query = `SELECT ${profileColumns} FROM profile WHERE gender = ${gender} AND star IN (${ids.join()})`;
+  async getHoroscopic(
+    gender: string,
+    ids: number[],
+    profile_id: number,
+  ): Promise<Profiles[]> {
+    let query = `SELECT ${profileColumns} FROM profile p LEFT JOIN shortlist sh  ON p.id = sh.short_id AND sh.profile_id = ${profile_id}  WHERE gender = '${gender}' AND star IN (${ids.join()})`;
     return this.dataSource.execute(query);
   }
 }

@@ -52,9 +52,11 @@ export class DailyRecomController {
     const profiles = await this.preferenceRepository.getDailyRecomentation(
       gender,
       preference,
+      this.authUser.id,
     );
 
-    const data = profiles.map(profile => {
+    const data = profiles.map((profile: any) => {
+      profile.is_liked = profile.is_liked ? true : false;
       const staticdata = replaceStaticValue(profile);
       return {
         ...profile,

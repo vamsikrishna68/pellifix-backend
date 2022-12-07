@@ -19,8 +19,9 @@ export class PreferenceRepository extends DefaultCrudRepository<
   async getDailyRecomentation(
     gender: string,
     preference: Preference,
+    profile_id: number,
   ): Promise<Profiles[]> {
-    let query = `SELECT ${profileColumns} FROM profile WHERE gender = '${gender}' `;
+    let query = `SELECT ${profileColumns} FROM profile p LEFT JOIN shortlist sh  ON p.id = sh.short_id AND sh.profile_id = ${profile_id}  WHERE p.gender = '${gender}' `;
     if (preference) {
       if (preference.age) {
         const age: any = preference.age;
