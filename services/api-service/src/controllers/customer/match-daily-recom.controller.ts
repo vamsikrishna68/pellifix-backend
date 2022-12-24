@@ -42,6 +42,8 @@ export class DailyRecomController {
   async find(
     @param.filter(Profiles) filter?: Filter<Profiles>,
   ): Promise<Object> {
+    let limit = filter?.limit ? filter.limit : 10;
+    let skip = filter?.skip ? filter.skip : 0;
     const pro = await this.profilesRepository.findById(this.authUser.id, {
       fields: {password: false},
     });
@@ -49,10 +51,16 @@ export class DailyRecomController {
       this.authUser.id,
     );
     const gender = pro.gender === GENDER.MALE ? GENDER.FEMALE : GENDER.MALE;
+    const count = await this.preferenceRepository.getDailyRecomentationCount(
+      gender,
+      preference,
+      this.authUser.id,
+    );
     const profiles = await this.preferenceRepository.getDailyRecomentation(
       gender,
       preference,
       this.authUser.id,
+      {limit, skip},
     );
 
     const data = profiles.map((profile: any) => {
@@ -64,6 +72,7 @@ export class DailyRecomController {
       };
     });
     return {
+      count,
       data,
     };
   }

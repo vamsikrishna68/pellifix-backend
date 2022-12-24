@@ -46,3 +46,8 @@ export interface FileFields {
   buffer: Buffer;
   size: number;
 }
+
+export interface CustomeFilter {
+  limit: number;
+  skip: number;
+}

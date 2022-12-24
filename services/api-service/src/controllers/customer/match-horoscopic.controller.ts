@@ -1,6 +1,12 @@
 import {inject} from '@loopback/core';
-import {repository} from '@loopback/repository';
-import {get, getModelSchemaRef, HttpErrors, response} from '@loopback/rest';
+import {Filter, repository} from '@loopback/repository';
+import {
+  get,
+  getModelSchemaRef,
+  HttpErrors,
+  param,
+  response,
+} from '@loopback/rest';
 import {Profiles} from '../../models';
 import {ProfilesRepository} from '../../repositories';
 import {startMatch} from '../../data/star-match';
@@ -32,17 +38,27 @@ export class HoroscopicMatchController {
       },
     },
   })
-  async find(): Promise<Object> {
+  async find(
+    @param.filter(Profiles) filter?: Filter<Profiles>,
+  ): Promise<Object> {
+    let limit = filter?.limit ? filter.limit : 10;
+    let skip = filter?.skip ? filter.skip : 0;
+
     const profile = await this.profilesRepository.findById(this.authUser.id, {
       fields: {password: false},
     });
     const gender = profile.gender === GENDER.MALE ? GENDER.FEMALE : GENDER.MALE;
     const matchStartIds = startMatch[Number(profile.star)];
-
+    const count = await this.profilesRepository.getHoroscopicCount(
+      gender,
+      matchStartIds,
+      this.authUser.id,
+    );
     const profiles = await this.profilesRepository.getHoroscopic(
       gender,
       matchStartIds,
       this.authUser.id,
+      {limit, skip},
     );
     const data = profiles.map((profile: any) => {
       profile.is_liked = profile.is_liked ? true : false;
@@ -53,6 +69,6 @@ export class HoroscopicMatchController {
       };
     });
 
-    return {data};
+    return {count, data};
   }
 }
