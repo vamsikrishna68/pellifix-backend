@@ -12,6 +12,7 @@ import {
 import {Profiles} from '../../models';
 import {ImagesRepository, ProfilesRepository} from '../../repositories';
 import {AuthUser} from '../../utils';
+import {replaceStaticValue} from '../profile-utils';
 import {staticImageURL} from '../utils';
 
 export class ProfilesController {
@@ -37,10 +38,7 @@ export class ProfilesController {
       },
     },
   })
-  async findById(
-    @param.filter(Profiles, {exclude: 'where'})
-    filter?: FilterExcludingWhere<Profiles>,
-  ): Promise<Object> {
+  async findById(@param.query.string('type') type: string): Promise<Object> {
     let proimgs = await this.imagesRepository.find({
       where: {pro_id: this.authUser.id},
       fields: {url: true},
@@ -57,7 +55,12 @@ export class ProfilesController {
 
     const images = proimgs.length ? proimgs.map(x => x.url) : [];
 
-    return {...profile, images};
+    if (type === 'MOBILE') {
+      const data = {...profile, ...replaceStaticValue(profile)};
+      return {...data, images};
+    } else {
+      return {...profile, images};
+    }
   }
 
   @patch('/v1/profiles')
