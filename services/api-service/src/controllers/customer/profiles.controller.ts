@@ -58,9 +58,8 @@ export class ProfilesController {
     if (type === 'MOBILE') {
       const data = {...profile, ...replaceStaticValue(profile)};
       return {...data, images};
-    } else {
-      return {...profile, images};
     }
+    return {...profile, images};
   }
 
   @patch('/v1/profiles')

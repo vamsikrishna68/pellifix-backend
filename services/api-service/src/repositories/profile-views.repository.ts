@@ -17,7 +17,7 @@ export class ProfileViewsRepository extends DefaultCrudRepository<
   }
 
   async getProfileViews(ids: number[], filter?: Filter): Promise<Profiles[]> {
-    let query = `SELECT ${profileColumns} FROM profile WHERE id IN (${ids})`;
+    let query = `SELECT ${profileColumns} FROM profile p LEFT JOIN shortlist sh  ON p.id = sh.short_id WHERE p.id IN (${ids})`;
     return this.dataSource.execute(query);
   }
 }

@@ -1,8 +1,7 @@
 {
   "GENDER": [
     {"name": "Male", "sort": 1, "id": 1},
-    {"name": "Female", "sort": 2, "id": 2},
-    {"name": "Others", "sort": 3, "id": 3}
+    {"name": "Female", "sort": 2, "id": 2}
   ],
   "SALARY": [
     {"id": 1, "name": "0-1 Lakhs", "sort": 1},
