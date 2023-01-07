@@ -86,4 +86,22 @@ export class ProfilesController {
   ): Promise<void> {
     await this.profilesRepository.updateById(this.authUser.id, profile);
   }
+
+  @get('/v1/profiles/membership')
+  @response(200, {
+    description: 'Check the profile is membership enabled or not',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(Profiles, {includeRelations: true}),
+      },
+    },
+  })
+  async getMembership(): Promise<Object> {
+    const profile = await this.profilesRepository.findById(this.authUser.id);
+
+    return {
+      profile_id: profile.profile_id,
+      is_membership: profile.is_membership,
+    };
+  }
 }
