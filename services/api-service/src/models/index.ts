@@ -8,3 +8,4 @@ export * from './profile-views.model';
 export * from './profile-chats.model';
 export * from './profile-messages.model';
 export * from './payment-page-viewed.model';
+export * from './deleted-profile.model';

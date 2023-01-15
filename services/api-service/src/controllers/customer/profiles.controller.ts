@@ -1,6 +1,7 @@
 import {inject} from '@loopback/core';
 import {Filter, FilterExcludingWhere, repository} from '@loopback/repository';
 import {
+  del,
   get,
   getModelSchemaRef,
   HttpErrors,
@@ -10,7 +11,12 @@ import {
   response,
 } from '@loopback/rest';
 import {Profiles} from '../../models';
-import {ImagesRepository, ProfilesRepository} from '../../repositories';
+import {
+  DeletedProfileRepository,
+  ImagesRepository,
+  PreferenceRepository,
+  ProfilesRepository,
+} from '../../repositories';
 import {AuthUser} from '../../utils';
 import {replaceStaticValue} from '../profile-utils';
 import {staticImageURL} from '../utils';
@@ -21,6 +27,10 @@ export class ProfilesController {
     public profilesRepository: ProfilesRepository,
     @repository(ImagesRepository)
     public imagesRepository: ImagesRepository,
+    @repository(DeletedProfileRepository)
+    public deletedProfileRepository: DeletedProfileRepository,
+    @repository(PreferenceRepository)
+    public preferenceRepository: PreferenceRepository,
     @inject('authUser')
     public authUser: AuthUser,
   ) {
@@ -103,5 +113,20 @@ export class ProfilesController {
       profile_id: profile.profile_id,
       is_membership: profile.is_membership,
     };
+  }
+  @del('/v1/profiles')
+  @response(204, {
+    description: 'Admin DELETE success',
+  })
+  async deleteById(): Promise<void> {
+    const profile = await this.profilesRepository.findById(this.authUser.id);
+    await this.deletedProfileRepository.create({
+      profile_info: profile,
+      deleted_by: 'USER',
+    });
+
+    await this.profilesRepository.deleteById(this.authUser.id);
+    await this.preferenceRepository.deleteById(this.authUser.id);
+    await this.imagesRepository.deleteAll({pro_id: this.authUser.id});
   }
 }
