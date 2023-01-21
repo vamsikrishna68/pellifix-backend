@@ -15,7 +15,7 @@ export class AssociatesLoginController {
     public adminRepository: AdminRepository,
   ) {}
 
-  @post('/cp/v1/associates/auth/login')
+  @post('/cp/v1/auth/associates/login')
   async login(
     @requestBody({
       content: {
@@ -36,7 +36,7 @@ export class AssociatesLoginController {
     },
   ): Promise<{name: string; id: number; token: string}> {
     const user = await this.adminRepository.findOne({
-      where: {email_id: pro.email_id, role_id: ROLES.SUB_ORDINATES},
+      where: {email_id: pro.email_id, role_id: ROLES.ASSOCIATES},
     });
 
     if (!user) {
@@ -63,7 +63,7 @@ export class AssociatesLoginController {
    * password reset API's
    */
 
-  @post('/cp/v1/associates/auth/password/reset')
+  @post('/cp/v1/auth/associates/password/reset')
   async passwordReset(
     @requestBody({
       content: {
@@ -82,7 +82,7 @@ export class AssociatesLoginController {
     },
   ): Promise<Object> {
     const profile = await this.adminRepository.findOne({
-      where: {email_id: pro.email_id, role_id: ROLES.SUB_ORDINATES},
+      where: {email_id: pro.email_id, role_id: ROLES.ASSOCIATES},
     });
 
     if (!profile) {
@@ -104,7 +104,7 @@ export class AssociatesLoginController {
     };
   }
 
-  @patch('/cp/v1/associates/auth/password/update/{hash}')
+  @patch('/cp/v1/auth/associates/password/update/{hash}')
   async passwordUpdate(
     @param.path.string('hash') hash: string,
     @requestBody({

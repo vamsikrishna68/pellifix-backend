@@ -15,7 +15,7 @@ export class SubOrdinateLoginController {
     public adminRepository: AdminRepository,
   ) {}
 
-  @post('/cp/v1/sub-ordinate/auth/login')
+  @post('/cp/v1/auth/sub-ordinate/login')
   async login(
     @requestBody({
       content: {
@@ -63,7 +63,7 @@ export class SubOrdinateLoginController {
    * password reset API's
    */
 
-  @post('/cp/v1/sub-ordinate/auth/password/reset')
+  @post('/cp/v1/auth/sub-ordinate/password/reset')
   async passwordReset(
     @requestBody({
       content: {
@@ -104,7 +104,7 @@ export class SubOrdinateLoginController {
     };
   }
 
-  @patch('/cp/v1/sub-ordinate/auth/password/update/{hash}')
+  @patch('/cp/v1/auth/sub-ordinate/password/update/{hash}')
   async passwordUpdate(
     @param.path.string('hash') hash: string,
     @requestBody({

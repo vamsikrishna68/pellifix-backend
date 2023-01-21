@@ -14,7 +14,7 @@ export class AdminAuthController {
     public adminRepository: AdminRepository,
   ) {}
 
-  @post('/cp/v1/admin/auth/login')
+  @post('/cp/v1/auth/admin/login')
   async login(
     @requestBody({
       content: {
@@ -57,7 +57,7 @@ export class AdminAuthController {
    * password reset API's
    */
 
-  @post('/cp/v1/admin/auth/password/reset')
+  @post('/cp/v1/auth/admin/password/reset')
   async passwordReset(
     @requestBody({
       content: {
@@ -98,7 +98,7 @@ export class AdminAuthController {
     };
   }
 
-  @patch('/cp/v1/admin/auth/password/update/{hash}')
+  @patch('/cp/v1/auth/admin/password/update/{hash}')
   async passwordUpdate(
     @param.path.string('hash') hash: string,
     @requestBody({
