@@ -3,7 +3,6 @@ import {get, HttpErrors, post, requestBody} from '@loopback/rest';
 import {AuthUser} from '../utils';
 import {PaymentHistoryRepository} from '../repositories';
 import {repository} from '@loopback/repository';
-import {createHmac} from 'crypto';
 import {PaymentHistory} from '../models';
 const Razorpay = require('razorpay');
 

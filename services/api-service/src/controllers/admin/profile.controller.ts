@@ -11,14 +11,15 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Profiles} from '../../models';
-import {ProfilesRepository} from '../../repositories';
+import {PaymentHistory, Profiles} from '../../models';
+import {PaymentHistoryRepository, ProfilesRepository} from '../../repositories';
 import {AuthUser, genProfileId} from '../../utils';
-
 export class AdminProfilesController {
   constructor(
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,
+    @repository(PaymentHistoryRepository)
+    public paymentHistoryRepository: PaymentHistoryRepository,
     @inject('authUser')
     public authUser: AuthUser,
   ) {
@@ -162,6 +163,16 @@ export class AdminProfilesController {
   ): Promise<void> {
     profile.updated_by = this.authUser.id;
     await this.profilesRepository.updateById(id, profile);
+  }
+
+  @get('/cp/v1/profiles/payment/{id}')
+  @response(200, {
+    description: 'Profile payment list and details',
+  })
+  async getPaymet(
+    @param.path.number('id') id: number,
+  ): Promise<PaymentHistory[]> {
+    return this.paymentHistoryRepository.find({where: {profile_id: id}});
   }
 
   @del('/cp/v1/profiles/{id}')
