@@ -17,10 +17,20 @@ export class PaymentHistory extends Entity {
   profile_id: number;
 
   @property({
+    type: 'number',
+  })
+  amount: number;
+
+  @property({
     type: 'object',
     required: true,
   })
   payment_info: object;
+
+  @property({
+    type: 'object',
+  })
+  more_details: object;
 
   @property({
     type: 'date',

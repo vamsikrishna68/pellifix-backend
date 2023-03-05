@@ -1,9 +1,12 @@
 import {inject} from '@loopback/core';
-import {HttpErrors, post, requestBody} from '@loopback/rest';
+import {get, HttpErrors, post, requestBody} from '@loopback/rest';
 import {AuthUser} from '../utils';
 import {PaymentHistoryRepository} from '../repositories';
 import {repository} from '@loopback/repository';
+import {createHmac} from 'crypto';
+import {PaymentHistory} from '../models';
 const Razorpay = require('razorpay');
+
 interface RayzorFields {
   amount: number;
   currency: string;
@@ -14,6 +17,8 @@ interface RayzorFields {
 
 interface PaymentComplete {
   profile_id: number;
+  amount: number;
+  more_details: Object;
   payment_info: {
     razorpay_payment_id: string;
     razorpay_order_id: string;
@@ -105,13 +110,41 @@ export class RazorpayController {
                 },
               },
             },
-            required: ['profile_id', 'payment_info'],
+            required: ['payment_info'],
           },
         },
       },
     })
     data: PaymentComplete,
   ): Promise<void> {
-    await this.paymentHistoryRepository.create(data);
+    try {
+      const paymentDetails = await razorpay.payments.fetch(
+        data.payment_info.razorpay_payment_id,
+      );
+
+      data.amount = Math.round(paymentDetails.amount / 100);
+      data.more_details = paymentDetails;
+      data.profile_id = this.authUser.id;
+
+      await this.paymentHistoryRepository.create(data);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  /**
+   * Get paymnet list
+   * @param data
+   */
+  @get('/v1/razor/payment', {
+    responses: {
+      '200': [],
+    },
+  })
+  async getPaymentList(): Promise<PaymentHistory[]> {
+    return await this.paymentHistoryRepository.find({
+      where: {profile_id: this.authUser.id},
+      fields: {more_details: false, payment_info: false},
+    });
   }
 }
