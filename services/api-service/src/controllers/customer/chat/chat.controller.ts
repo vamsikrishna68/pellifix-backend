@@ -13,8 +13,9 @@ import {
   ProfileMessagesRepository,
   ProfilesRepository,
 } from '../../../repositories';
+import {Chatengine} from '../../../services/chatengine.service';
 import {AuthUser} from '../../../utils';
-
+const chatengine = new Chatengine();
 export class ProfileChatsController {
   constructor(
     @repository(ProfileChatsRepository)
@@ -124,6 +125,41 @@ export class ProfileChatsController {
       profile_id: sender_id,
       message: chat.message,
     });
+
+    return {success: true};
+  }
+
+  @post('/v1/users/chats/start')
+  @response(204, {
+    description: 'Start new chat',
+  })
+  async startChat(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            properties: {
+              reciverId: {type: 'number'},
+            },
+            required: ['reciverId'],
+          },
+        },
+      },
+    })
+    chat: {
+      reciverId: number;
+    },
+  ): Promise<Object> {
+    const reciver = await this.profilesRepository.findById(chat.reciverId);
+    const sender = await this.profilesRepository.findById(this.authUser.id);
+
+    const result = await chatengine.startChart(
+      sender.profile_id!,
+      reciver.profile_id!,
+    );
+    if (result.status === 'ERROR') {
+      throw new HttpErrors.UnprocessableEntity(result.message);
+    }
 
     return {success: true};
   }

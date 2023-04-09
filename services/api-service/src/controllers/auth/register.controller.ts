@@ -15,6 +15,9 @@ import {
 import {genJwtToken} from '../../services/jwt-token.service';
 import {sendMail} from '../../services/email.service';
 import {sendOtpSMS, verifyOtpSMS} from '../../services/twilio.service';
+import {Chatengine} from '../../services/chatengine.service';
+
+const chatengine = new Chatengine();
 export class CustomerController {
   constructor(
     @repository(PreferenceRepository)
@@ -79,6 +82,14 @@ export class CustomerController {
      *  Create default preference for profile
      */
     await this.preferenceRepository.create(defaultPreference(res));
+
+    /**
+     * Create user in chatengine
+     */
+    const result = await chatengine.createUser(user.name!, profile_id);
+    if (result.status === 'ERROR') {
+      throw new HttpErrors.UnprocessableEntity(result.message);
+    }
     return {profile_id, ...user};
   }
 
