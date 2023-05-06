@@ -163,4 +163,14 @@ export class ProfileChatsController {
 
     return {success: true};
   }
+
+  @get('/v1/users/chats/token')
+  async user(): Promise<Object> {
+    const user = await this.profilesRepository.findById(this.authUser.id);
+    const data = {
+      username: user.profile_id!.toLowerCase(),
+      secret: `pellifix_${user.profile_id}`,
+    };
+    return {token: Buffer.from(JSON.stringify(data)).toString('base64')};
+  }
 }
