@@ -6,7 +6,7 @@ import {profileColumns} from '../data/sql-query';
 
 export class ShortlistRepository extends DefaultCrudRepository<
   Shortlist,
-  typeof Shortlist.prototype.profile_id,
+  typeof Shortlist.prototype.id,
   ShortlistRelations
 > {
   constructor(

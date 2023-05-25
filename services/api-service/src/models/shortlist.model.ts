@@ -6,6 +6,11 @@ export class Shortlist extends Entity {
     type: 'number',
     id: true,
     generated: false,
+    required: false,
+  })
+  id?: number;
+  @property({
+    type: 'number',
     required: true,
   })
   profile_id: number;

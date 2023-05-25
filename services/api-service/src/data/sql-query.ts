@@ -1,5 +1,5 @@
 export const profileColumns = [
-  'id',
+  'p.id',
   'p.profile_id',
   'profile_creater',
   'name',
