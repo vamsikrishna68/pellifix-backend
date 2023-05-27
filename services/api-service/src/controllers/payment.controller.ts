@@ -1,7 +1,7 @@
 import {inject} from '@loopback/core';
 import {get, HttpErrors, post, requestBody} from '@loopback/rest';
 import {AuthUser} from '../utils';
-import {PaymentHistoryRepository} from '../repositories';
+import {PaymentHistoryRepository, ProfilesRepository} from '../repositories';
 import {repository} from '@loopback/repository';
 import {PaymentHistory} from '../models';
 const Razorpay = require('razorpay');
@@ -35,6 +35,8 @@ export class RazorpayController {
     public authUser: AuthUser,
     @repository(PaymentHistoryRepository)
     public paymentHistoryRepository: PaymentHistoryRepository,
+    @repository(ProfilesRepository)
+    public profilesRepository: ProfilesRepository,
   ) {
     if (!this.authUser.id) {
       throw new HttpErrors.Unauthorized('Unauthorized');
@@ -126,6 +128,9 @@ export class RazorpayController {
       data.profile_id = this.authUser.id;
 
       await this.paymentHistoryRepository.create(data);
+      await this.profilesRepository.updateById(this.authUser.id, {
+        is_membership: true,
+      });
     } catch (err) {
       throw err;
     }
