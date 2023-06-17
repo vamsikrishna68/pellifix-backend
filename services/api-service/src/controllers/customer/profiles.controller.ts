@@ -15,6 +15,7 @@ import {
   DeletedProfileRepository,
   ImagesRepository,
   PreferenceRepository,
+  ProfileAssistRepository,
   ProfilesRepository,
 } from '../../repositories';
 import {AuthUser} from '../../utils';
@@ -29,6 +30,8 @@ export class ProfilesController {
     public imagesRepository: ImagesRepository,
     @repository(DeletedProfileRepository)
     public deletedProfileRepository: DeletedProfileRepository,
+    @repository(ProfileAssistRepository)
+    public profileAssistRepository: ProfileAssistRepository,
     @repository(PreferenceRepository)
     public preferenceRepository: PreferenceRepository,
     @inject('authUser')
@@ -70,6 +73,39 @@ export class ProfilesController {
       return {...data, images};
     }
     return {...profile, images};
+  }
+
+  @get('/v1/profiles/assist')
+  @response(200, {
+    description: 'Profiles model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(Profiles, {includeRelations: true}),
+      },
+    },
+  })
+  async assist(@param.query.string('type') type: string): Promise<Object[]> {
+    const assistProfiles = await this.profileAssistRepository.find({
+      where: {profile_id: this.authUser.id},
+    });
+    if (!assistProfiles.length) {
+      return [];
+    }
+
+    const profileIds = assistProfiles.map(x => x.selected_id);
+    const profiles = await this.profileAssistRepository.getProfileAssist(
+      profileIds,
+    );
+
+    const data = profiles.map((profile: any) => {
+      profile.is_liked = Boolean(profile.is_liked);
+      const staticdata = replaceStaticValue(profile);
+      return {
+        ...profile,
+        ...staticdata,
+      };
+    });
+    return data;
   }
 
   @patch('/v1/profiles')

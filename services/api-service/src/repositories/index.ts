@@ -10,3 +10,4 @@ export * from './profile-messages.repository';
 export * from './payment-page-viewed.repository';
 export * from './deleted-profile.repository';
 export * from './payment-history.repository';
+export * from './profile-assist.repository';

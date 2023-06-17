@@ -10,3 +10,4 @@ export * from './profile-messages.model';
 export * from './payment-page-viewed.model';
 export * from './deleted-profile.model';
 export * from './payment-history.model';
+export * from './profile-assist.model';

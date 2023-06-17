@@ -11,15 +11,22 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {PaymentHistory, Profiles} from '../../models';
-import {PaymentHistoryRepository, ProfilesRepository} from '../../repositories';
+import {PaymentHistory, ProfileAssist, Profiles} from '../../models';
+import {
+  PaymentHistoryRepository,
+  ProfileAssistRepository,
+  ProfilesRepository,
+} from '../../repositories';
 import {AuthUser, genProfileId} from '../../utils';
+import {replaceStaticValue} from '../profile-utils';
 export class AdminProfilesController {
   constructor(
     @repository(ProfilesRepository)
     public profilesRepository: ProfilesRepository,
     @repository(PaymentHistoryRepository)
     public paymentHistoryRepository: PaymentHistoryRepository,
+    @repository(ProfileAssistRepository)
+    public profileAssistRepository: ProfileAssistRepository,
     @inject('authUser')
     public authUser: AuthUser,
   ) {
@@ -89,8 +96,8 @@ export class AdminProfilesController {
     @param.path.number('id') id: number,
     @param.filter(Profiles, {exclude: 'where'})
     filter?: FilterExcludingWhere<Profiles>,
-  ): Promise<Profiles> {
-    return this.profilesRepository.findById(id, {
+  ): Promise<Object> {
+    const profile = await this.profilesRepository.findById(id, {
       ...filter,
       fields: {
         password: false,
@@ -99,6 +106,31 @@ export class AdminProfilesController {
         updated_by: false,
       },
     });
+
+    const assist = await this.profileAssistRepository.find({
+      where: {
+        profile_id: id,
+      },
+    });
+
+    const profileIds = assist.map(x => x.selected_id);
+    const profiles = await this.profileAssistRepository.getProfileAssist(
+      profileIds,
+    );
+
+    const data = profiles.map((profile: any) => {
+      profile.is_liked = Boolean(profile.is_liked);
+      const staticdata = replaceStaticValue(profile);
+      return {
+        ...profile,
+        ...staticdata,
+      };
+    });
+
+    return {
+      ...profile,
+      assist: data,
+    };
   }
 
   @post('/cp/v1/profiles')
@@ -163,6 +195,36 @@ export class AdminProfilesController {
   ): Promise<void> {
     profile.updated_by = this.authUser.id;
     await this.profilesRepository.updateById(id, profile);
+  }
+
+  @post('/cp/v1/profiles/assist')
+  async profileAssist(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            properties: {
+              profile_id: {type: 'number'},
+              selected_id: {type: 'number'},
+            },
+          },
+        },
+      },
+    })
+    assist: ProfileAssist,
+  ): Promise<Object> {
+    const profile = await this.profileAssistRepository.findOne({
+      where: {profile_id: assist.profile_id, selected_id: assist.selected_id},
+    });
+    if (profile) {
+      return {
+        message: 'Already record inserted',
+      };
+    }
+    return this.profileAssistRepository.create({
+      profile_id: assist.profile_id,
+      selected_id: assist.selected_id,
+    });
   }
 
   @get('/cp/v1/profiles/payment/{id}')
