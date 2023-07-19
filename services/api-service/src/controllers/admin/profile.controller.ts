@@ -106,6 +106,7 @@ export class AdminProfilesController {
         updated_by: false,
       },
     });
+    console.log('comming 1');
 
     const assist = await this.profileAssistRepository.find({
       where: {
@@ -113,10 +114,13 @@ export class AdminProfilesController {
       },
     });
 
+    console.log('comming 2', assist);
+
     const profileIds = assist.map(x => x.selected_id);
-    const profiles = await this.profileAssistRepository.getProfileAssist(
-      profileIds,
-    );
+    const profiles = profileIds.length
+      ? await this.profileAssistRepository.getProfileAssist(profileIds)
+      : [];
+    console.log('comming 3');
 
     const data = profiles.map((profile: any) => {
       profile.is_liked = Boolean(profile.is_liked);
@@ -126,6 +130,8 @@ export class AdminProfilesController {
         ...staticdata,
       };
     });
+
+    console.log('comming 4');
 
     return {
       ...profile,
