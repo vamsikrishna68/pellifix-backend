@@ -50,7 +50,6 @@ export class ShortlistController {
     const alreadyLiked = await this.shortlistRepository.findOne({
       where: {profile_id: this.authUser.id, short_id: shortlist.short_id},
     });
-    console.log(alreadyLiked);
     if (alreadyLiked) {
       await this.shortlistRepository.updateById(alreadyLiked.id, {
         is_liked: shortlist.is_liked,
@@ -84,11 +83,9 @@ export class ShortlistController {
   async find(
     @param.filter(Shortlist) filter?: Filter<Shortlist>,
   ): Promise<CountAndData> {
-    console.log(this.authUser.id);
     const short = await this.shortlistRepository.find({
       where: {profile_id: this.authUser.id, is_liked: true},
     });
-    console.log(short);
     if (!short.length) {
       return {
         count: 0,

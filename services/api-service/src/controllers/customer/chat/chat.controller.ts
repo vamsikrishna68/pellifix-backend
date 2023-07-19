@@ -60,18 +60,14 @@ export class ProfileChatsController {
     });
 
     let profileIds: number[] = [];
-    console.log(chats);
     if (chats.length) {
       chats.map(x => {
-        console.log({rec: x.receiver_id, sen: x.sender_id});
         x.receiver_id !== this.authUser.id ? profileIds.push(x.receiver_id) : 0;
         x.sender_id !== this.authUser.id ? profileIds.push(x.sender_id) : 0;
-        console.log(profileIds);
       });
     } else {
       return [];
     }
-    //  console.log(profileIds);
     const profiles = await this.profilesRepository.find({
       where: {id: {inq: profileIds}},
       fields: {id: true, name: true},

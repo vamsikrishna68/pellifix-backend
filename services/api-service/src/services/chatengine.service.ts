@@ -28,7 +28,6 @@ export class Chatengine {
 
     try {
       const value = await axios.post(`${this.baseUrl}/users/`, data, {headers});
-      console.log(value);
       return {
         status: 'SUCCESS',
         message: 'Successfully added',
