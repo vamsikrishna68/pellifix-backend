@@ -93,12 +93,16 @@ export class ShortlistController {
       };
     } else {
       const ids = short.map(x => x.short_id);
-      const profiles = await this.shortlistRepository.getShortlist(ids);
+      const profiles = await this.shortlistRepository.getShortlist(
+        this.authUser.id,
+        ids,
+      );
       const data = profiles.map(profile => {
         const staticdata = replaceStaticValue(profile);
         return {
           ...profile,
           ...staticdata,
+          is_liked: Boolean(profile.is_liked),
         };
       });
 

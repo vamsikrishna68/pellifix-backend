@@ -16,8 +16,12 @@ export class ShortlistRepository extends DefaultCrudRepository<
     super(Shortlist, dataSource);
   }
 
-  async getShortlist(ids: number[], filter?: Filter): Promise<Profiles[]> {
-    let query = `SELECT ${profileColumns} FROM profile p LEFT JOIN shortlist sh  ON p.id = sh.short_id WHERE p.id IN (${ids})`;
+  async getShortlist(
+    profileId: number,
+    ids: number[],
+    filter?: Filter,
+  ): Promise<(Profiles & Shortlist)[]> {
+    let query = `SELECT ${profileColumns} FROM profile p LEFT JOIN shortlist sh  ON p.id = sh.short_id WHERE sh.is_liked = 1 AND p.id IN (${ids}) AND sh.profile_id =${profileId}`;
     return this.dataSource.execute(query);
   }
 }
