@@ -1,10 +1,16 @@
 import {inject} from '@loopback/core';
-import {Filter, FilterExcludingWhere, repository} from '@loopback/repository';
+import {
+  Filter,
+  FilterExcludingWhere,
+  Where,
+  repository,
+} from '@loopback/repository';
 import {
   get,
   getModelSchemaRef,
   HttpErrors,
   param,
+  requestBody,
   response,
 } from '@loopback/rest';
 import {Profiles} from '../../models';
@@ -59,5 +65,26 @@ export class ProfilesDetailsController {
     const images = proimgs.length ? proimgs.map(x => x.url) : [];
 
     return {...data, images};
+  }
+  @get('/v1/profiles/compare')
+  @response(200, {
+    description: 'Profiles compare instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(Profiles, {includeRelations: true}),
+      },
+    },
+  })
+  async profileCompare(
+    @param.query.string('profile_ids', {required: true}) profileIds: string,
+  ): Promise<Object[]> {
+    const profile = profileIds.split(',').map(x => Number(x));
+    if (profile.length !== 2) {
+      throw new HttpErrors.UnprocessableEntity('Two profile ids required');
+    }
+    const profile_1 = await this.findById(profile[0]);
+    const profile_2 = await this.findById(profile[1]);
+
+    return profile_1 && profile_2 ? [profile_1, profile_2] : [];
   }
 }
