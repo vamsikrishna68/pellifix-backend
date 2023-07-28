@@ -21,3 +21,19 @@ export const s3Upload = async (files: FileFields[]) => {
 
   return await Promise.all(params.map(param => S3.upload(param).promise()));
 };
+
+export const deleteFileFromS3 = async (fileName: string): Promise<void> => {
+  try {
+    const params = {
+      Bucket: BucketName!,
+      Key: 'profiles/' + fileName,
+    };
+
+    await S3.deleteObject(params).promise();
+  } catch (error) {
+    console.error(
+      `Error deleting file '${fileName}' from S3 bucket '${BucketName}': ${error.message}`,
+    );
+    throw error;
+  }
+};

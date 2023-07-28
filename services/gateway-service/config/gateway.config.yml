@@ -24,7 +24,7 @@ apiEndpoints:
       - "/cp/v1/payment/page/viewed*"
       # Image URLs
       - "/v1/pellifix/images*"
-      - "/v1/profiles/images/uploads"
+      - "/v1/profiles/images*"
       # Razorpay
       - "/v1/razor/payment*"
 

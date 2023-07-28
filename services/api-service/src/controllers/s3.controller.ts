@@ -2,11 +2,14 @@ import * as AWS from 'aws-sdk';
 import {inject} from '@loopback/core';
 import {
   post,
+  del,
   requestBody,
+  response,
   Request,
   Response,
   RestBindings,
   HttpErrors,
+  param,
 } from '@loopback/rest';
 
 import multer from 'multer';
@@ -14,7 +17,7 @@ import {v4 as uuidv4} from 'uuid';
 import {repository} from '@loopback/repository';
 import {ImagesRepository, ProfilesRepository} from '../repositories';
 import {AuthUser} from '../utils';
-import {s3Upload} from './S3-upload';
+import {s3Upload, deleteFileFromS3} from './S3-bucket';
 import {FileFields} from '../types';
 
 export class StorageController {
@@ -174,5 +177,34 @@ export class StorageController {
 
     await this.imagesRepository.createAll(result);
     return imageUrls;
+  }
+
+  @del('/v1/profiles/images/deletes')
+  @response(204, {
+    description: 'Photo DELETE success',
+  })
+  async deleteById(
+    @param.query.string('image_id', {required: true})
+    image: string,
+  ): Promise<Object> {
+    console.log({new_name: image, pro_id: this.authUser.id});
+    const profile = await this.imagesRepository.findOne({
+      where: {new_name: image, pro_id: 2},
+    });
+
+    if (!profile) {
+      throw new HttpErrors.NotFound('Given image id image is not there');
+    }
+    // Delete the image
+    try {
+      await this.imagesRepository.deleteById(profile.id);
+      await deleteFileFromS3(image);
+      return {message: `Image deleted successfully (${image})`};
+    } catch (err) {
+      console.log(err);
+      throw new HttpErrors.UnprocessableEntity(
+        `Failed to delete the image (${image})`,
+      );
+    }
   }
 }
