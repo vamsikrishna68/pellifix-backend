@@ -4,3 +4,4 @@ export * from './customer/profiles.controller';
 export * from './customer/preference.controller';
 export * from './admin/earnings.controller';
 export * from './customer/shortlist.controller';
+export * from './admin/subscription-price.controller';

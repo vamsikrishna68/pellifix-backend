@@ -11,3 +11,4 @@ export * from './payment-page-viewed.model';
 export * from './deleted-profile.model';
 export * from './payment-history.model';
 export * from './profile-assist.model';
+export * from './subscription-price.model';

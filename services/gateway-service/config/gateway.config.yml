@@ -22,6 +22,7 @@ apiEndpoints:
       - "/cp/v1/sub-ordinates*"
       - "/cp/v1/associates*"
       - "/cp/v1/payment/page/viewed*"
+      - "/cp/v1/subscription-prices*"
       # Image URLs
       - "/v1/pellifix/images*"
       - "/v1/profiles/images*"

@@ -10,13 +10,14 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
-import {Profiles} from '../../models';
+import {Profiles, SubscriptionPrice} from '../../models';
 import {
   DeletedProfileRepository,
   ImagesRepository,
   PreferenceRepository,
   ProfileAssistRepository,
   ProfilesRepository,
+  SubscriptionPriceRepository,
 } from '../../repositories';
 import {AuthUser} from '../../utils';
 import {replaceStaticValue} from '../profile-utils';
@@ -34,6 +35,8 @@ export class ProfilesController {
     public profileAssistRepository: ProfileAssistRepository,
     @repository(PreferenceRepository)
     public preferenceRepository: PreferenceRepository,
+    @repository(SubscriptionPriceRepository)
+    public subscriptionPriceRepository: SubscriptionPriceRepository,
     @inject('authUser')
     public authUser: AuthUser,
   ) {
@@ -150,6 +153,23 @@ export class ProfilesController {
       is_membership: profile.is_membership,
     };
   }
+
+  @get('/v1/profiles/subscription-prices')
+  @response(200, {
+    description: 'Array of SubscriptionPrice model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(SubscriptionPrice, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async find(): Promise<SubscriptionPrice[]> {
+    return this.subscriptionPriceRepository.find({where: {active: true}});
+  }
+
   @del('/v1/profiles')
   @response(204, {
     description: 'Admin DELETE success',
